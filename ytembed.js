@@ -39,6 +39,7 @@ function generate() {
 	var playlist = document.getElementById('playlist').value;
 	var searchplaylist = document.getElementById('searchplaylist').value;
 	var start = document.getElementById('start').value;
+	var end = document.getElementById('end').value;
 	var wmlocation = document.getElementById('wmlocation').value;
 	var wmlink = document.getElementById('wmlink').value;
 	var wmxcontrol = parseInt(document.getElementById('wmxcontrol').value);
@@ -268,6 +269,14 @@ function generate() {
 			ytid += '&start='+start;
 		}
 	}
+	if (end !== ""){
+		if(ytid == document.getElementById('ytid').value){
+			ytid += '?end='+end;
+		}
+		else{
+			ytid += '&end='+end;
+		}
+	}
 	var modheight = parseInt(document.getElementById('height').value);
 	var modwidth = parseInt(document.getElementById('width').value);
 	var wmintro = '<div style=\"overflow: hidden;width:'+modwidth+'px;height:'+modheight+'px;\"><style type=\"text\/css\">.watermark{border:0;position:relative;bottom:'+wmvpos+'px;left:'+wmhpos+'px;max-width:150px;max-height:75px;opacity:0.25;z-index:5;-o-transition:opacity 0.5s ease-in-out;-moz-transition:opacity 0.5s ease-in-out;-webkit-transition:opacity 0.5s ease-in-out;transition:opacity 0.5s ease-in-out;}.watermark:hover{opacity:1;}<\/style>';
@@ -350,6 +359,7 @@ function clearall(){
 	document.getElementById('width').value = 560;
 	document.getElementById('height').value = 315;
 	document.getElementById('start').value = "";
+	document.getElementById('end').value = "";
 	document.getElementById('custompara').value = "";
 	document.getElementById('searchplaylist').value = "";
 	document.getElementById('playlist').value = "";
