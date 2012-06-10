@@ -8,7 +8,7 @@ YouTube embeds are surprisingly versatile; there are numerous URL parameters to 
 
 Usage
 -----
-To see the tool in action, you can find a working example [here](http://www.classynemesis.com/projects/ytembed/).
+To see the tool in action, you can find a working example [here](http://jprusik.github.com/custom-yt-embed/index.html).
 
 The `generate()` function can be called on page load, button click, or however else you wish. This will take the values from each field and parse the YouTube embed syntax accordingly.
 
