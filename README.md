@@ -32,7 +32,7 @@ The JavaScript included has NOT been thoroughly cleaned - incomplete features an
 
 Credits
 -------
-Jonathan Prusik @jprusik <www.classynemesis.com>
+Jonathan Prusik @jprusik [www.classynemesis.com]
 
 License
 -------
