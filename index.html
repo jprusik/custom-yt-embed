@@ -10,6 +10,10 @@
 	h1{
 		text-shadow: white 1px 1px 1px;
 	}
+	h2{
+		font-family: arial,sans-serif;
+		margin: 0em 0em 0.5em 0em;
+	}
 	#URL, #Description, #GraphicURL{
 		color:gray;
 	}
@@ -36,6 +40,7 @@
 		font-size: 13px;
 		color:white;
 		cursor:pointer;
+		border:0px solid white;
 		-moz-border-radius: 3px;
 		-webkit-border-radius: 3px;
 		border-radius: 3px;
@@ -138,10 +143,61 @@
 		text-decoration: underline;
 		color: #4F60B5;
 	}
+	@-moz-document url-prefix() {
+		.slider{display:none;}
+	}
 </style>
+<!--[if IE]><style type="text/css">.slider{display:none;}</style><![endif]-->
 <script type="text/javascript" async src="ytembed.js"></script>
+<script type="text/javascript">
+function displaysub(id){
+     var ID = document.getElementById(id); 
+     
+     if(ID.style.display == "") 
+          ID.style.display = "none"; 
+     else 
+          ID.style.display = ""; 
+      }
+function play(){
+	var ytid = document.getElementById('ytid').value;
+	document.getElementById('preview').innerHTML = '<iframe width="560" height="315" src="http://www.youtube.com/embed/QH2-TGUlwu4"></iframe>';
+}
+/*Clears Video ID field from default value when selected*/
+function Clear(elem){
+	if (elem.value === 'QH2-TGUlwu4'){
+	elem.value='';
+	}
+	else{
+	}
+}
+/* Controls sub-menu display on Demo Interface*/
+function displaysub(id){
+	var subid = document.getElementById(id);
+	if(subid.style.display == ""){
+		subid.style.display = "none";
+	}
+	else{
+		subid.style.display = "";
+	}
+}
+function rangecheck(elem){
+	if (elem.value > 100){
+		elem.value = 100;
+	}
+	if (elem.value < 0){
+		elem.value = 0;
+	}
+}
+function resetfields(){
+	document.getElementById('wmxcontrol').value = 85;
+	document.getElementById('wmycontrol').value = 25;
+	document.getElementById('wmlocation').value = "http://s.ytimg.com/yt/img/logos/youtube_logo_onecolor_againstblack-vflAZNyvx.png";
+	document.getElementById('wmlink').value = "http://www.youtube.com";
+	document.getElementById('prevthumblink').value = "http://img.youtube.com/vi/ueP-sPcgooI/maxresdefault.jpg";
+}
+</script>
 </head>
-<body onload="addtext();">
+<body onload="clearall();imgcheck();">
 <center>
 <div style="display:block;">
 	<h1><img style="height:40px;vertical-align: bottom;" src="http://s.ytimg.com/yt/img/logos/youtube_logo_standard_againstwhite-vflKoO81_.png" alt="YouTube Logo"/> Custom Video Embed Generator</h1>
@@ -152,71 +208,97 @@
 		<td align="left" style="width:300px;padding-right:2em;vertical-align:top;font-size:10px;line-height:15px;">
 			<form>
 				<div class="optionbox" style="margin-top:0px;">
-					<span style="font-weight:bold;font-size:15px;">YouTube Video Id</span><br/>
-					<input style="margin-left:0;height:30px;" type="text" class="input" id="ytid" size="15" maxlength="11" value="QH2-TGUlwu4" onfocus="select(this);"/><br/><br/>
+					<div style="margin-bottom:5em;">
+						<input type="button" class="generate button" style="float:left;" value="Generate Embed Code" onClick="imgcheck();">
+						<input type="button" class="reset button" style="float:right;" value="Reset Options" onClick="clearall();resetfields();imgcheck();">
+					</div>
+					<span style="font-weight:bold;font-size:15px;">YouTube Video Id or URL</span><br/>
+					<input style="margin-left:0;height:15px;" type="text" class="input" id="ytid" size="11" value="QH2-TGUlwu4" onClick="select(this);" onchange="parseid();imgcheck();"/><br/><span id="ytidmess" style="width:133px;height:10px;font:bold 10px sans-serif;color:red;"></span><br/>
 					<!--Play Options-->
-					<input type="text" class="input" id="width" size="4" maxlength="5" value="560" style="width:5em;height:30px;" onClick="select(this);"/><span>&nbsp;Width (pixels)</span><br/>
-					<input type="text" class="input" id="height" size="4" maxlength="5" value="315" style="width:5em;height:30px;" onClick="select(this);"/><span>&nbsp;Height (pixels)</span><br/>
-					<span>Start Video at:&nbsp;</span><input type="text" class="input" id="start" size="4" style="height:30px;" onClick="select(this);" /><span>&nbsp;seconds</span><br/>
-					<span>End Video at:&nbsp;</span><input type="text" class="input" id="end" size="4" style="height:30px;" onClick="select(this);" /><span>&nbsp;seconds</span><br/>
-					<label><input type="checkbox" id="security" onClick="addtext();" /><span>&nbsp;Use Enhanced Security (<a href="http://support.google.com/youtube/bin/answer.py?hl=en&answer=171780&expand=UseHTTPS#HTTPS" target="_blank">https</a>)</span></label><br/>
-					<label><input type="checkbox" id="autoplay" onClick="addtext();" /><span>&nbsp;Autoplay Video</span></label><br/>
-					<label><input type="checkbox" id="loop" onClick="addtext();" /><span>&nbsp;Loop the video/playlist</span></label><br/>
+					<div style="clear:both;width:100%;height:60px;">
+						<div style="float:left;">
+							<input type="text" class="input" id="width" size="1" maxlength="4" value="560" style="height:15px;width:2em;" onClick="select(this);" onchange="imgcheck();"/><span>&nbsp;Width (pixels)</span><br/>
+							<input type="text" class="input" id="height" size="1" maxlength="4" value="315" style="height:15px;width:2em;" onClick="select(this);" onchange="imgcheck();"/><span>&nbsp;Height (pixels)</span><br/>
+						</div>
+						<div style="float:right;text-align:right;padding-left:1em;border-left:1px solid lightgrey;">
+							<span>Start Video at:&nbsp;</span><input type="text" class="input" id="start" size="1" maxlength="4" style="height:15px;width:2em;" onClick="select(this);" onchange="imgcheck();"/><span>&nbsp;seconds</span><br/>
+							<span>End Video at:&nbsp;</span><input type="text" class="input" id="end" size="1" maxlength="4" style="height:15px;width:2em;" onClick="select(this);" onchange="imgcheck();"/><span>&nbsp;seconds</span><br/>
+						</div>
+					</div>
+					<br/>
+					<label><input type="checkbox" id="security" onClick="imgcheck();" /><span>&nbsp;Use Enhanced Security (<a href="http://support.google.com/youtube/bin/answer.py?hl=en&answer=171780&expand=UseHTTPS#HTTPS" target="_blank">https</a>)</span></label><br/>
+					<label><input type="checkbox" id="autoplay" onClick="imgcheck();" /><span>&nbsp;Autoplay Video</span></label><br/>
+					<label><input type="checkbox" id="loop" onClick="imgcheck();" /><span>&nbsp;Loop the video/playlist</span></label><br/>
 					<!--Apearance-->
-					<label><input type="checkbox" id="modestbranding" onClick="addtext();" /><span>&nbsp;Modest Branding</span></label><br/>
-					<label><input type="checkbox" id="showinfo" onClick="addtext();" /><span>&nbsp;Disable dropdown video information box</span></label><br/>
-					<label><input type="checkbox" id="related" onClick="addtext();" /><span>&nbsp;Do not show related videos on playback</span></label><br/>
-					<label><input type="checkbox" id="ccload" onClick="addtext();" /><span>&nbsp;Show closed captions by default</span></label><br/>
-					<label><input type="checkbox" id="annotations" onClick="addtext();" /><span>&nbsp;Annotations disabled by default</span></label><br/>
-					<label><input type="checkbox" id="theme" onClick="customuicheck();addtext();" /><span>&nbsp;Use alternate "Light" UI theme</span></label><br/>
-					<label><input type="checkbox" id="customUI" onClick="autohidecheck();addtext();"/><span>&nbsp;"It needs more rounded corners and drop shadows Captain!" (requires non-hiding play bar)</span></label><br/>
+					<label><input type="checkbox" id="modestbranding" onClick="imgcheck();" /><span>&nbsp;Modest Branding</span></label><br/>
+					<label><input type="checkbox" id="showinfo" onClick="imgcheck();" /><span>&nbsp;Disable dropdown video information box</span></label><br/>
+					<label><input type="checkbox" id="related" onClick="imgcheck();" /><span>&nbsp;Do not show related videos on playback</span></label><br/>
+					<label><input type="checkbox" id="ccload" onClick="imgcheck();" /><span>&nbsp;Show closed captions by default</span></label><br/>
+					<label><input type="checkbox" id="annotations" onClick="imgcheck();" /><span>&nbsp;Annotations disabled by default</span></label><br/>
+					<label><input type="checkbox" id="theme" onClick="imgcheck();" /><span>&nbsp;Use alternate "Light" UI theme</span></label><br/>
+					<label><input type="checkbox" id="customUI" onClick="autohidecheck();imgcheck();"/><span>&nbsp;Custom Frame (requires non-hiding play bar)</span></label><br/>
 					<!--Control Options-->
-					<label><input type="checkbox" id="fullscreenbutton" onClick="addtext();" /><span>&nbsp;Disable fullscreen button</span></label><br/>
-					<label><input type="checkbox" id="playbarcolor" onClick="addtext();" /><span>&nbsp;Use white progress bar instead of red</span></label><br/>
-					<label><input type="checkbox" id="autohide" onClick="customuicheck();addtext();" /><span>&nbsp;Do not autohide play bar</span></label><br/>
-					<label><input type="checkbox" id="controls" onClick="customuicheck();addtext();" /><span>&nbsp;Disable player controls</span></label><br/>
-					<label><input type="checkbox" id="kbcontrols" onClick="addtext();" /><span>&nbsp;Disable keyboard control shortcuts</span></label><br/><br/>
+					<label><input type="checkbox" id="fullscreenbutton" onClick="imgcheck();" /><span>&nbsp;Disable fullscreen button</span></label><br/>
+					<label><input type="checkbox" id="playbarcolor" onClick="imgcheck();" /><span>&nbsp;Use white progress bar instead of red</span></label><br/>
+					<label><input type="checkbox" id="autohide" onClick="customuicheck();imgcheck();" /><span>&nbsp;Do not autohide play bar</span></label><br/>
+					<label><input type="checkbox" id="controls" onClick="customuicheck();imgcheck();" /><span>&nbsp;Disable player controls</span></label><br/>
+					<label><input type="checkbox" id="kbcontrols" onClick="imgcheck();" /><span>&nbsp;Disable keyboard control shortcuts</span></label><br/><br/>
 					<span>Custom Parameter</span><br/>
-					<input type="text" class="input" id="custompara" style="width:150px;height:30px;" /><br/><br/>
+					<input type="text" class="input" id="custompara" style="width:150px;height:15px;" onchange="imgcheck();"/><br/><br/>
 					<span>Search term playlist (single-word search term)</span><br/>
-					<input type="text" class="input" id="searchplaylist" style="width:300px;height:30px;" /><br/><br/>
+					<input type="text" class="input" id="searchplaylist" style="width:300px;height:15px;" onchange="imgcheck();"/><br/><br/>
 					<span>On-the-fly playlist (comma-seperated video IDs)</span><br/>
-					<input type="text" class="input" id="playlist" style="width:300px;height:30px;" /><br/>
+					<input type="text" class="input" id="playlist" style="width:300px;height:15px;" onchange="imgcheck();"/><br/>
 				</div>
 				<div class="optionbox">
+					<h2>Custom Watermark</h2>
 					<span style="font:bold 10px sans-serif;color:#FF0000;">(Does not support Internet Explorer 6 or earlier)</span><br/>
-					<input type="checkbox" id="watermark" onClick="addtext();" /><span>&nbsp;Enable custom watermark </span><br/>
-					<span>Custom Watermark Location</span><br/>
-					<input type="text" class="input" id="wmlocation" style="width:300px;height:30px;" value="http://s.ytimg.com/yt/img/logos/youtube_logo_onecolor_againstblack-vflAZNyvx.png" onClick="select(this);" /><br/><br/>
-					<span>Custom Watermark Link</span><br/>
-					<input type="text" class="input" id="wmlink" style="width:300px;height:30px;" value="http://www.youtube.com" onClick="select(this);" /><br/><br/>
-					<!--<span>Custom Watermark Position (pixels)</span><br/>-->
-					<span style="float:left;line-height: 110px;margin-bottom: 20px;margin-right:1em;font-weight:bold;">y pos&nbsp;<input type="text" class="input" id="wmycontrol" style="width:3em;height:30px;" maxlength="3" size="3" value="25" onClick="select(this);" />&nbsp;%</span>
-					<span>Watermark Preview:</span><br/>
-					<div id="wmcontainer" style="text-align:center;width:150px;height:75px;display: table-cell;vertical-align: middle;background-color: #EEE;background-image: linear-gradient(45deg, #333 25%, transparent 25%, transparent 75%, #333 75%, #333), linear-gradient(45deg, #333 25%, transparent 25%, transparent 75%, #333 75%, #333);background-size: 30px 30px;background-position: 0 0, 15px 15px;background-color: #EEE;background-image: -webkit-linear-gradient(45deg, #333 25%, transparent 25%, transparent 75%, #333 75%, #333), -webkit-linear-gradient(45deg, #333 25%, transparent 25%, transparent 75%, #333 75%, #333);background-size: 30px 30px;background-position: 0 0, 15px 15px;"></div>
-					<span style="margin: 0 35px;font-weight:bold;">x pos&nbsp;<input type="text" class="input" id="wmxcontrol" style="width:3em;height:30px;" maxlength="3" value="85" onClick="select(this);" />&nbsp;%&nbsp;&nbsp;</span>
+					<label><input type="checkbox" id="watermark" onClick="displaysub('watermarksub');setTimeout(function(){imgcheck();},1);" /><span>&nbsp;Enable custom watermark</span></label><br/><br/>
+					<div id="watermarksub" style="display:none;">
+						<span>Custom Watermark Location</span><br/>
+						<input type="text" class="input" id="wmlocation" style="width:300px;height:15px;" value="http://s.ytimg.com/yt/img/logos/youtube_logo_onecolor_againstblack-vflAZNyvx.png" onClick="select(this);" onchange="imgcheck();" /><br/><br/>
+						<span>Custom Watermark Link</span><br/>
+						<input type="text" class="input" id="wmlink" style="width:300px;height:15px;" value="http://www.youtube.com" onClick="select(this);" onchange="imgcheck();" /><br/><br/>
+						<span style="float:left;line-height: 120px;font-weight:bold;">y pos&nbsp;
+							<input type="text" class="input" id="wmycontrol" style="width:2em;height:15px;" maxlength="3" size="3" value="25" onClick="select(this);" onchange="rangecheck(this);wmyslider.value=value;imgcheck();"/>&nbsp;%
+							<input class="slider" name="wmyslider" style="width:75px;margin: 0px -25px;-o-transform: rotate(-90deg);-webkit-transform: rotate(-90deg);transform: rotate(-90deg);" type="range" value="25" min="0" max="100" onchange="wmycontrol.value=value;" onmouseup="imgcheck();">
+						</span>
+						<span>Watermark Preview:</span><br/>
+						<div id="wmcontainer" style="text-align:center;width:150px;height:75px;display: table-cell;vertical-align: middle;background-color: #EEE;background-image: linear-gradient(45deg, #333 25%, transparent 25%, transparent 75%, #333 75%, #333), linear-gradient(45deg, #333 25%, transparent 25%, transparent 75%, #333 75%, #333);background-size: 30px 30px;background-position: 0 0, 15px 15px;background-color: #EEE;background-image: -webkit-linear-gradient(45deg, #333 25%, transparent 25%, transparent 75%, #333 75%, #333), -webkit-linear-gradient(45deg, #333 25%, transparent 25%, transparent 75%, #333 75%, #333);background-size: 30px 30px;background-position: 0 0, 15px 15px;"></div>
+						<input class="slider" name="wmxslider" style="width:150px;-o-transform: rotate(-180deg) scalex(-1);-webkit-transform: rotate(-180deg) scalex(-1);transform: rotate(-180deg) scalex(-1);" type="range" value="85" min="0" max="100" onchange="wmxcontrol.value=value;" onmouseup="imgcheck();"><br/>
+						<span style="margin: 0 35px;font-weight:bold;">x pos&nbsp;<input type="text" class="input" name="wmxcontrol" id="wmxcontrol" style="width:2em;height:15px;" maxlength="3" value="85" onClick="select(this);" onchange="rangecheck(this);wmxslider.value=value;imgcheck();"/>&nbsp;%&nbsp;&nbsp;</span>
+						
+					</div>
 				</div>
-				<div style="">
-					<input type="button" class="generate button" style="float:left;" value="Generate Embed Code" onClick="addtext();">
-					<input type="button" class="reset button" style="float:right;" value="Reset Options" onClick="clearall();addtext();">
+				<div class="optionbox">
+					<h2>Custom Preview Image</h2>
+					<span style="font:bold 10px sans-serif;color:#FF0000;">(Does not support Internet Explorer 7 or earlier)</span><br/>
+					<label><input type="checkbox" id="prevthumb" onClick="prevthumbcheck();imgcheck();displaysub('previmgsub');" /><span>&nbsp;Enable Custom Preview Image (requires autoplay)</span></label><br/><br/>
+					<div id="previmgsub" style="display:none;">
+						<span>Custom Preview Image Location</span><br/>
+						<input type="text" class="input" id="prevthumblink" style="width:300px;height:15px;" value="http://img.youtube.com/vi/ueP-sPcgooI/maxresdefault.jpg" onClick="select(this);" onchange="imgcheck();" /><br/><br/>
+					</div>
 				</div>
 			</form>
 			<br/>
 			<hr style="clear:both;" />
-			<form>
-				<span style="font-weight:bold;font-family:sans-serif;color:#FF0000;font-size:10px;">Note: The below features <a href="https://developers.google.com/youtube/player_parameters" target="_blank">are in Google's documentation</a>, but appear to be deprecated or only work with the old (Flash) embed code.</span><br/>
-				<!--Not working; may be deprecated or only works with old embed code-->
-				<input type="checkbox" id="hd" /><span>&nbsp;Default HD Playback (if available)</span><br/>
-				<input type="checkbox" id="showsearch" /><span>&nbsp;Disable Video Search Box</span><br/>
-				<input type="checkbox" id="egm" /><span>&nbsp;Enable Enhanced Genie Menu</span><br/>
-				<input type="checkbox" id="videoborder" /><span>&nbsp;Enable Video Border</span><br/>
-				<input type="text" class="input" size="6" maxlength="6" id="bordercolor1" style="width:5em;height:30px;" onClick="select(this);" /><span>&nbsp;Primary Border Color (Hex)</span><br/>
-				<input type="text" class="input" size="6" maxlength="6" id="bordercolor2" style="width:5em;height:30px;" onClick="select(this);" /><span>&nbsp;Secondary Border Color (Hex)</span><br/>
-				<!--
-				<input type="checkbox" id="jsapi" /><span>Enable Javascript API</span><br/>
-				<input type="checkbox" id="origin" /><span>Origin</span><br/>
-				<input type="text" id="playerapiid" /><span>Player App ID (used with JS API)</span><br/>
-				-->
+			<form style="padding:0px 1em;">
+				<span style="font-weight:bold;font-family:sans-serif;color:#FF0000;font-size:10px;">Note: The below features <a href="https://developers.google.com/youtube/player_parameters" target="_blank">are in Google's documentation</a>, but are deprecated and only work with the old (Flash-only) embed code.</span><br/>
+				<label><input type="checkbox" onClick="displaysub('deprecatedsub');" /><span>&nbsp;Enable deprecated features</span></label><br/>
+				<div id="deprecatedsub" style="display:none;margin-left:2em;">
+					<!--Not working; may be deprecated or only works with old embed code-->
+					<label><input type="checkbox" id="hd" /><span>&nbsp;Default HD Playback (if available)</span></label><br/>
+					<label><input type="checkbox" id="showsearch" /><span>&nbsp;Disable Video Search Box</span></label><br/>
+					<label><input type="checkbox" id="egm" /><span>&nbsp;Enable Enhanced Genie Menu</span></label><br/>
+					<label><input type="checkbox" id="videoborder" /><span>&nbsp;Enable Video Border</span></label><br/>
+					<label><input type="text" class="input" size="6" maxlength="6" id="bordercolor1" style="width:5em;height:15px;" onClick="select(this);" /><span>&nbsp;Primary Border Color (Hex)</span></label><br/>
+					<label><input type="text" class="input" size="6" maxlength="6" id="bordercolor2" style="width:5em;height:15px;" onClick="select(this);" /><span>&nbsp;Secondary Border Color (Hex)</span></label><br/>
+					<!--
+					<input type="checkbox" id="jsapi" /><span>Enable Javascript API</span><br/>
+					<input type="checkbox" id="origin" /><span>Origin</span><br/>
+					<input type="text" id="playerapiid" /><span>Player App ID (used with JS API)</span><br/>
+					-->
+				</div>
 			</form>
 		</td>
 		<td style="width:300px;padding-right:2em;vertical-align:top;font-size:12px;font-weight:bold;text-align:left;">
@@ -242,7 +324,8 @@
 					</tr>
 				</table><br/>
 			<span style="margin-top:1em;">Preview:</span><br/>
-			<div style="clear:both;width:670px;max-width:670px;max-height:1920px;overflow:auto;padding: 10px 10px 10px 0px;" id="preview"></div>
+			<!--<div style="clear:both;width:670px;max-width:670px;max-height:1920px;overflow:auto;padding: 10px 10px 10px 0px;" id="preview"></div>-->
+			<iframe frameBorder="0" style="clear:both;width:100%;min-height:550px;max-width:670px;max-height:1920px;overflow:auto;border:0px solid white;" id="preview"></iframe>
 		</td>
 	</tr>
 </table>

@@ -8,7 +8,7 @@ YouTube embeds are surprisingly versatile; there are numerous URL parameters to 
 
 Usage
 -----
-To see the tool in action, you can find a working example [here](http://www.classynemesis.com/projects/ytembed/).
+To see the tool in action, you can find a working example [here](http://jprusik.github.com/custom-yt-embed/index.html).
 
 The `generate()` function can be called on page load, button click, or however else you wish. This will take the values from each field and parse the YouTube embed syntax accordingly.
 
@@ -22,13 +22,17 @@ The Custom YouTube Embed Generator currently only generates code for YouTube's n
 
 Some deprecated/Flash-only options are included for reference purposes.
 
-The watermark and custom frame functionalities are not officially supported by Google and are not embed parameters. As such, you may experience unexpected behavior when using these options.
+The watermark, custom preview image, and custom frame functionalities are not officially supported by Google and are not embed parameters. As such, you may experience unexpected behavior when using these options.
 
-The JavaScript included has NOT been thoroughly cleaned - incomplete features and features in development are commented out, but present in the source.
+Two image assets ("yt-playbtn.png" and "yt-nav-gr-dark.png") are currently hosted on my own server for demonstration purposes. If you use the Custom Frame or Preview Image options, you may wish to modify your embed output and save the image files locally.
+
+The preview image does not correctly scale for IE versions earlier than 9, and will be addressed in later revisions.
+
+The JavaScript included has NOT been thoroughly cleaned - incomplete features and features-in-development are commented out, but present in the source.
 
 Credits
 -------
-Jonathan Prusik @jprusik
+Jonathan Prusik @jprusik [www.classynemesis.com]
 
 License
 -------
