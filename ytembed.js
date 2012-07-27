@@ -101,6 +101,22 @@ function generate() {
 			ytid += '&wmode=opaque';
 		}
 	}
+	if (document.getElementById('720hd').checked){
+		if(ytid == document.getElementById('ytid').value){
+			ytid += '?vq=hd720';
+		}
+		else{
+			ytid += '&vq=hd720';
+		}
+	}
+	if (document.getElementById('1080hd').checked){
+		if(ytid == document.getElementById('ytid').value){
+			ytid += '?vq=hd1080';
+		}
+		else{
+			ytid += '&vq=hd1080';
+		}
+	}
 	if (document.getElementById('modestbranding').checked){
 		if(ytid == document.getElementById('ytid').value){
 			ytid += '?modestbranding=1';
@@ -351,6 +367,16 @@ function generate() {
 	window.contentWindow.document.write('<html><head><style type="text/css">body{margin:0;}</style></head><body>'+finalstring+'</body></html>');
 	window.contentWindow.document.close();
 }
+function hdcheck720(){
+	if(document.getElementById('720hd').checked === true){
+		document.getElementById('1080hd').checked = false;
+	}
+}
+function hdcheck1080(){
+	if(document.getElementById('1080hd').checked === true){
+		document.getElementById('720hd').checked = false;
+	}
+}
 function autohidecheck(){
 	if(document.getElementById('customUI').checked === true){
 		document.getElementById('autohide').checked = true;
@@ -377,6 +403,8 @@ function clearall(){
 	document.getElementById('ccload').checked = false;
 	document.getElementById('controls').checked = false;
 	document.getElementById('fullscreenbutton').checked = false;
+	document.getElementById('720hd').checked = false;
+	document.getElementById('1080hd').checked = false;
 	document.getElementById('hd').checked = false;
 	document.getElementById('annotations').checked = false;
 	document.getElementById('loop').checked = false;
