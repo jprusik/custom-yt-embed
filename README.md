@@ -22,7 +22,7 @@ The Custom YouTube Embed Generator currently only generates code for YouTube's n
 
 Some deprecated/Flash-only options are included for reference purposes.
 
-The watermark, custom preview image, and custom frame functionalities are not officially supported by Google and are not embed parameters. As such, you may experience unexpected behavior when using these options.
+The watermark, custom preview image, Call-to-action, and custom frame functionalities are not officially supported by Google and are not embed parameters. As such, you may experience unexpected behavior when using these options.
 
 Two image assets ("yt-playbtn.png" and "yt-nav-gr-dark.png") are currently hosted on my own server for demonstration purposes. If you use the Custom Frame or Preview Image options, you may wish to modify your embed output and save the image files locally.
 
