@@ -42,7 +42,7 @@ function generate() {
 	document.getElementById('linkpreview3').innerHTML = "";
 	document.getElementById('tbpreview').innerHTML = "";
 	document.getElementById('tbactive').innerHTML = "";
-	/*document.getElementById('preview').innerHTML = "";*/
+	/*document.getElementById('vidwrap').innerHTML = "";*/
 	document.getElementById('wmcontainer').innerHTML = "";
 	var finalstring = "";
 	var width = 'width=\"'+document.getElementById('width').value+'\" ';
@@ -58,6 +58,8 @@ function generate() {
 	var wmlocation = document.getElementById('wmlocation').value;
 	var wmlink = document.getElementById('wmlink').value;
 	var prevthumblink = document.getElementById('prevthumblink').value;
+	var ctaimg = document.getElementById('ctathumbimg').value;
+	var ctalink = document.getElementById('ctathumblink').value;
 	var wmxcontrol = parseInt(document.getElementById('wmxcontrol').value);
 	var wmycontrol = parseInt(document.getElementById('wmycontrol').value);
 	/*Set HTTP value based on set security*/
@@ -341,20 +343,26 @@ function generate() {
 		/*Calculate position of play button*/
 		var playv = (parseInt(document.getElementById('height').value) / 2)-25;
 		var playh = (parseInt(document.getElementById('width').value) / 2)-35;
-		finalstring = '<div id=\"player\" style=\"height:'+document.getElementById('height').value+'px;width:'+document.getElementById('width').value+'px;background: black url(\''+prevthumblink+'\') no-repeat center;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;overflow:hidden;\"><img onclick=\"play();\" style=\"margin: '+playv+'px '+playh+'px;cursor:pointer;\" src=\"http:\/\/www.classynemesis.com\/projects\/ytembed\/yt-playbtn.png\"\/><\/div><script type=\"text\/javascript\">function play(){document.getElementById(\'player\').innerHTML = \'<iframe '+width+height+'src=\"http:\/\/www.youtube.com\/embed\/'+ytid+'\"><\/iframe>\';}<\/script>';
+		finalstring = '<div id=\"vidwrap\" style=\"height:'+document.getElementById('height').value+'px;width:'+document.getElementById('width').value+'px;background: black url(\''+prevthumblink+'\') no-repeat center;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;overflow:hidden;\"><img onclick=\"play();\" style=\"margin: '+playv+'px '+playh+'px;cursor:pointer;\" src=\"http:\/\/www.classynemesis.com\/projects\/ytembed\/yt-playbtn.png\"\/><\/div><script type=\"text\/javascript\">function play(){document.getElementById(\'vidwrap\').innerHTML = \'<iframe '+width+height+'src=\"http:\/\/www.youtube.com\/embed\/'+ytid+'\"><\/iframe>\';}<\/script>';
 		/*If customUI is also Enabled*/
 		/*if ((document.getElementById('customUI').checked === true) && (document.getElementById('watermark').checked === false)){
 			wmintro = '<div style=\"overflow: hidden;width:'+modwidth+'px;height:'+modheight+'px;'+customuistyle+'\"><style type=\"text\/css\">.watermark{border:0;position:relative;bottom:'+wmvpos+'px;left:'+wmhpos+'px;max-width:150px;max-height:75px;opacity:0.25;z-index:5;-o-transition:opacity 0.5s ease-in-out;-moz-transition:opacity 0.5s ease-in-out;-webkit-transition:opacity 0.5s ease-in-out;transition:opacity 0.5s ease-in-out;}.watermark:hover{opacity:1;}<\/style>';
-			finalstring = '<div id=\"player\" style=\"height:'+document.getElementById('height').value+'px;width:'+document.getElementById('width').value+'px;background: black url(\''+prevthumblink+'\') no-repeat center;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;overflow:hidden;\"><img onclick=\"play();\" style=\"margin: '+playv+'px '+playh+'px;cursor:pointer;\" src=\"http:\/\/www.classynemesis.com\/projects\/ytembed\/yt-playbtn.png\"\/><\/div><script type=\"text\/javascript\">function play(){document.getElementById(\'player\').innerHTML = \'<iframe '+width+height+'src=\"http:\/\/www.youtube.com\/embed\/'+ytid+'\"><\/iframe>\';}<\/script>';
+			finalstring = '<div id=\"vidwrap\" style=\"height:'+document.getElementById('height').value+'px;width:'+document.getElementById('width').value+'px;background: black url(\''+prevthumblink+'\') no-repeat center;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;overflow:hidden;\"><img onclick=\"play();\" style=\"margin: '+playv+'px '+playh+'px;cursor:pointer;\" src=\"http:\/\/www.classynemesis.com\/projects\/ytembed\/yt-playbtn.png\"\/><\/div><script type=\"text\/javascript\">function play(){document.getElementById(\'vidwrap\').innerHTML = \'<iframe '+width+height+'src=\"http:\/\/www.youtube.com\/embed\/'+ytid+'\"><\/iframe>\';}<\/script>';
 		}*/
 		/*If Watermark is also Enabled*/
 		if ((document.getElementById('watermark').checked === true) && (document.getElementById('customUI').checked === false)){
-			finalstring = '<div id=\"player\" style=\"height:'+document.getElementById('height').value+'px;width:'+document.getElementById('width').value+'px;background: black url(\''+prevthumblink+'\') no-repeat center;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;overflow:hidden;\"><img onclick=\"play();\" style=\"margin: '+playv+'px '+playh+'px;cursor:pointer;\" src=\"http:\/\/www.classynemesis.com\/projects\/ytembed\/yt-playbtn.png\"\/><\/div><script type=\"text\/javascript\">function play(){document.getElementById(\'player\').innerHTML = \''+wmintro+'<iframe '+width+height+'src=\"http:\/\/www.youtube.com\/embed\/'+ytid+'\"><\/iframe>'+wmoutro+'\';}<\/script>';
+			finalstring = '<div id=\"vidwrap\" style=\"height:'+document.getElementById('height').value+'px;width:'+document.getElementById('width').value+'px;background: black url(\''+prevthumblink+'\') no-repeat center;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;overflow:hidden;\"><img onclick=\"play();\" style=\"margin: '+playv+'px '+playh+'px;cursor:pointer;\" src=\"http:\/\/www.classynemesis.com\/projects\/ytembed\/yt-playbtn.png\"\/><\/div><script type=\"text\/javascript\">function play(){document.getElementById(\'vidwrap\').innerHTML = \''+wmintro+'<iframe '+width+height+'src=\"http:\/\/www.youtube.com\/embed\/'+ytid+'\"><\/iframe>'+wmoutro+'\';}<\/script>';
 		}
 		/*If Watermark and customUI are both also Enabled*/
 		/*if ((document.getElementById('watermark').checked === true) && (document.getElementById('customUI').checked === true)){
 			wmintro = '<div style=\"overflow: hidden;width:'+modwidth+'px;height:'+modheight+'px;'+customuistyle+'\"><style type=\"text\/css\">.watermark{border:0;position:relative;bottom:'+wmvpos+'px;left:'+wmhpos+'px;max-width:150px;max-height:75px;opacity:0.25;z-index:5;-o-transition:opacity 0.5s ease-in-out;-moz-transition:opacity 0.5s ease-in-out;-webkit-transition:opacity 0.5s ease-in-out;transition:opacity 0.5s ease-in-out;}.watermark:hover{opacity:1;}<\/style>';
 		}*/
+	}
+	/*If CTA Image is Enabled*/
+	if (document.getElementById('ctathumb').checked){
+		finalstring = '<div id=\"vidwrap\"><iframe id=\"player\" '+width+height+'src=\"http:\/\/www.youtube.com\/embed\/'+ytid+'\"><\/iframe><\/div> <script> var tag = document.createElement(\'script\'); tag.src = \"\/\/www.youtube.com\/iframe_api\"; var firstScriptTag = document.getElementsByTagName(\'script\')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); var player; function onYouTubeIframeAPIReady() { player = new YT.Player(\'player\', { events: { \'onStateChange\': onPlayerStateChange } }); } function onPlayerStateChange(event) { if (event.data == YT.PlayerState.ENDED) { document.getElementById(\'vidwrap\').innerHTML = \'<a href=\"'+ctalink+'\" target=\"_blank\"><img '+width+height+'src=\"'+ctaimg+'\"\/><\/a>\'; } } <\/script>';
+		/*If Custom Preview Image is Also Enabled*/
+		// TBD
 	}
 	document.getElementById('embedcode').value = finalstring;
 	document.getElementById('linkpreview').innerHTML = '<a style=\"font-family:arial,sans-serif;font-color:blue;\" href=\"'+ytstring+'\" target=\"_blank\">'+ytstring+'<\/a>';
@@ -362,8 +370,8 @@ function generate() {
 	document.getElementById('linkpreview3').innerHTML = '<a style=\"font-family:arial,sans-serif;font-color:blue;\" href=\"'+ytstring3+'\" target=\"_blank\">'+ytstring3+'<\/a>';
 	document.getElementById('tbpreview').innerHTML = tbstring;
 	document.getElementById('tbactive').innerHTML = tbactive;
-	/*document.getElementById('preview').innerHTML = finalstring;*/
-	var window = document.getElementById('preview');
+	/*document.getElementById('vidwrap').innerHTML = finalstring;*/
+	var window = document.getElementById('vidwrap');
 	window.contentWindow.document.write('<html><head><style type="text/css">body{margin:0;}</style></head><body>'+finalstring+'</body></html>');
 	window.contentWindow.document.close();
 }
@@ -390,10 +398,28 @@ function customuicheck(){
 		document.getElementById('customUI').checked = false;
 	}
 }
+function watermarkcheck(){
+	if(document.getElementById('watermark').checked === true){
+		document.getElementById('ctathumb').checked = false;
+		document.getElementById('ctaimgsub').style.display = "none";
+	}
+}
 function prevthumbcheck(){
 	if(document.getElementById('prevthumb').checked === true){
 		document.getElementById('autoplay').checked = true;
 		document.getElementById('customUI').checked = false;
+		document.getElementById('ctathumb').checked = false;
+		document.getElementById('ctaimgsub').style.display = "none";
+	}
+}
+function ctathumbcheck(){
+	if(document.getElementById('ctathumb').checked === true){
+		document.getElementById('customUI').checked = false;
+		document.getElementById('prevthumb').checked = false;
+		document.getElementById('previmgsub').style.display = "none";
+		document.getElementById('watermark').checked = false;
+		document.getElementById('watermarksub').style.display = "none";
+		
 	}
 }
 function clearall(){
@@ -420,6 +446,7 @@ function clearall(){
 	document.getElementById('customUI').checked = false;
 	document.getElementById('watermark').checked = false;
 	document.getElementById('prevthumb').checked = false;
+	document.getElementById('ctathumb').checked = false;
 	document.getElementById('width').value = 560;
 	document.getElementById('height').value = 315;
 	document.getElementById('start').value = "";
@@ -431,4 +458,5 @@ function clearall(){
 	document.getElementById('bordercolor2').value = "";
 	document.getElementById('watermarksub').style.display = "none";
 	document.getElementById('previmgsub').style.display = "none";
+	document.getElementById('ctaimgsub').style.display = "none";
 }
