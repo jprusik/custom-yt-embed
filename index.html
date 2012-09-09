@@ -160,7 +160,7 @@ function displaysub(id){
       }
 function play(){
 	var ytid = document.getElementById('ytid').value;
-	document.getElementById('preview').innerHTML = '<iframe width="560" height="315" src="http://www.youtube.com/embed/QH2-TGUlwu4"></iframe>';
+	document.getElementById('vidwrap').innerHTML = '<iframe width="560" height="315" src="http://www.youtube.com/embed/QH2-TGUlwu4"></iframe>';
 }
 /*Clears Video ID field from default value when selected*/
 function Clear(elem){
@@ -194,6 +194,8 @@ function resetfields(){
 	document.getElementById('wmlocation').value = "http://s.ytimg.com/yt/img/logos/youtube_logo_onecolor_againstblack-vflAZNyvx.png";
 	document.getElementById('wmlink').value = "http://www.youtube.com";
 	document.getElementById('prevthumblink').value = "http://img.youtube.com/vi/ueP-sPcgooI/maxresdefault.jpg";
+	document.getElementById('ctathumbimg').value = "http://img.youtube.com/vi/Z3ZAGBL6UBA/default.jpg";
+	document.getElementById('ctathumblink').value = "http://www.knowyourmeme.com";
 }
 </script>
 </head>
@@ -255,7 +257,7 @@ function resetfields(){
 				<div class="optionbox">
 					<h2>Custom Watermark</h2>
 					<span style="font:bold 10px sans-serif;color:#FF0000;">(Does not support Internet Explorer 6 or earlier)</span><br/>
-					<label><input type="checkbox" id="watermark" onClick="displaysub('watermarksub');setTimeout(function(){imgcheck();},1);" /><span>&nbsp;Enable custom watermark</span></label><br/><br/>
+					<label><input type="checkbox" id="watermark" onClick="watermarkcheck();displaysub('watermarksub');setTimeout(function(){imgcheck();},1);" /><span>&nbsp;Enable custom watermark</span></label><br/><br/>
 					<div id="watermarksub" style="display:none;">
 						<span>Custom Watermark Location</span><br/>
 						<input type="text" class="input" id="wmlocation" style="width:300px;height:15px;" value="http://s.ytimg.com/yt/img/logos/youtube_logo_onecolor_againstblack-vflAZNyvx.png" onClick="select(this);" onchange="imgcheck();" /><br/><br/>
@@ -279,6 +281,17 @@ function resetfields(){
 					<div id="previmgsub" style="display:none;">
 						<span>Custom Preview Image Location</span><br/>
 						<input type="text" class="input" id="prevthumblink" style="width:300px;height:15px;" value="http://img.youtube.com/vi/ueP-sPcgooI/maxresdefault.jpg" onClick="select(this);" onchange="imgcheck();" /><br/><br/>
+					</div>
+				</div>
+				<div class="optionbox">
+					<h2>Call-to-Action</h2>
+					<span style="font:bold 10px sans-serif;color:#FF0000;">(Does not support Internet Explorer 7 or earlier)</span><br/>
+					<label><input type="checkbox" id="ctathumb" onClick="ctathumbcheck();imgcheck();displaysub('ctaimgsub');" /><span>&nbsp;Enable Custom Call-To-Action Image</span></label><br/><br/>
+					<div id="ctaimgsub" style="display:none;">
+						<span>Custom CTA Image Location</span><br/>
+						<input type="text" class="input" id="ctathumbimg" style="width:300px;height:15px;" value="http://img.youtube.com/vi/Z3ZAGBL6UBA/default.jpg" onClick="select(this);" onchange="imgcheck();" /><br/>
+						<span>Custom CTA Image Link</span><br/>
+						<input type="text" class="input" id="ctathumblink" style="width:300px;height:15px;" value="http://www.knowyourmeme.com" onClick="select(this);" onchange="imgcheck();" /><br/>
 					</div>
 				</div>
 			</form>
@@ -326,8 +339,8 @@ function resetfields(){
 					</tr>
 				</table><br/>
 			<span style="margin-top:1em;">Preview:</span><br/>
-			<!--<div style="clear:both;width:670px;max-width:670px;max-height:1920px;overflow:auto;padding: 10px 10px 10px 0px;" id="preview"></div>-->
-			<iframe frameBorder="0" style="clear:both;width:100%;min-height:550px;max-width:670px;max-height:1920px;overflow:auto;border:0px solid white;" id="preview"></iframe>
+			<!--<div style="clear:both;width:670px;max-width:670px;max-height:1920px;overflow:auto;padding: 10px 10px 10px 0px;" id="vidwrap"></div>-->
+			<iframe frameBorder="0" style="clear:both;width:100%;min-height:550px;max-width:670px;max-height:1920px;overflow:auto;border:0px solid white;" id="vidwrap"></iframe>
 		</td>
 	</tr>
 </table>
