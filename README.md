@@ -16,21 +16,21 @@ The "Custom Parameter" field allows for parameters not supported by this tool to
 
 To change thumbnails, you must already be logged into the active video's YouTube account. Clicking the thumbnails will only bring you the relevant Video Options page, and have no functionality on their own.
 
-Limitations
+Limitations/Known Issues
 -----------
 The Custom YouTube Embed Generator currently only generates code for YouTube's newest, preferred methodology, which uses an HTML5-friendly iframe to automatically switch to the most appropriate embedding method for the viewer. The old method used Flash only, and while it will still work, there are continually fewer reasons to use it as the iframe approach becomes more robust.
 
-Some deprecated/Flash-only options are included for reference purposes.
-
-The watermark, custom preview image, Call-to-action, and custom frame functionalities are not officially supported by Google and are not embed parameters. As such, you may experience unexpected behavior when using these options.
-
-Two image assets ("yt-playbtn.png" and "yt-nav-gr-dark.png") are currently hosted on my own server for demonstration purposes. If you use the Custom Frame or Preview Image options, you may wish to modify your embed output and save the image files locally.
+The watermark, custom preview image, Call-to-action, social media buttons, and custom frame functionalities are not officially supported by Google and are not embed parameters. As such, you may experience unexpected behavior when using these options.
 
 The preview image does not correctly scale for IE versions earlier than 9, and will be addressed in later revisions.
 
-The JavaScript included has NOT been thoroughly cleaned - incomplete features and features-in-development are commented out, but present in the source.
+Video info displays information pulled from the last valid video id, even if an invalid id is the present value
 
-Credits
+The Pinterest button displays at a slightly lower position than other social media buttons.
+
+The JavaScript included has NOT been thoroughly cleaned - incomplete features and features-in-development are commented out, but may be present in the source.
+
+Author
 -------
 Jonathan Prusik @jprusik [www.classynemesis.com]
 
