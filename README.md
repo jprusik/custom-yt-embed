@@ -14,6 +14,8 @@ The `generate()` function can be called on page load, button click, or however e
 
 The "Custom Parameter" field allows for parameters not supported by this tool to be easily included in the embed code output.
 
+The "HD" thumbnail link results in a error image if the queried video does not have a vertical resolution of 720 or greater.
+
 To change thumbnails, you must already be logged into the active video's YouTube account. Clicking the thumbnails will only bring you the relevant Video Options page, and have no functionality on their own.
 
 Limitations/Known Issues
