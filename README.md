@@ -14,8 +14,6 @@ The `generate()` function can be called on page load, button click, or however e
 
 The "Custom Parameter" field allows for parameters not supported by this tool to be easily included in the embed code output.
 
-The "HD" thumbnail link results in a error image if the queried video does not have a vertical resolution of 720 or greater.
-
 To change thumbnails, you must already be logged into the active video's YouTube account. Clicking the thumbnails will only bring you the relevant Video Options page, and have no functionality on their own.
 
 Limitations/Known Issues
@@ -26,7 +24,9 @@ The watermark, custom preview image, Call-to-action, social media buttons, and c
 
 The preview image does not correctly scale for IE versions earlier than 9, and will be addressed in later revisions.
 
-Video info displays information pulled from the last valid video id, even if an invalid id is the present value
+Video info displays information pulled from the last valid video id, even if an invalid id is the present value.
+
+The "HD" thumbnail link results in a error image if the queried video does not have a vertical resolution of 720 or greater.
 
 The Pinterest button displays at a slightly lower position than other social media buttons.
 
