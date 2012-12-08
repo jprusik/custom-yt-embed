@@ -14,12 +14,6 @@
 		font-family: arial,sans-serif;
 		margin: 0em 0em 0.5em 0em;
 	}
-	#URL, #Description, #GraphicURL{
-		color:gray;
-	}
-	#URL:focus, #Description:focus, #GraphicURL:focus{
-		color:black;
-	}
 	.input, textarea{
 		margin-top: 3px;
 		background: #F6F6F6;
@@ -151,25 +145,28 @@
 <script type="text/javascript" async src="ytembed.js"></script>
 <script type="text/javascript">
 function displaysub(id){
-     var ID = document.getElementById(id); 
-     
-     if(ID.style.display == "") 
-          ID.style.display = "none"; 
-     else 
-          ID.style.display = ""; 
-      }
+	var ID = document.getElementById(id); 
+
+	if(ID.style.display == "") 
+	  ID.style.display = "none"; 
+	else 
+	  ID.style.display = ""; 
+}
+
 function play(){
 	var ytid = document.getElementById('ytid').value;
 	document.getElementById('vidwrap').innerHTML = '<iframe width="560" height="315" src="http://www.youtube.com/embed/QH2-TGUlwu4"></iframe>';
 }
-/*Clears Video ID field from default value when selected*/
+
+/* Clears Video ID field and Social Media fields from default values when selected */
 function Clear(elem){
-	if (elem.value === 'QH2-TGUlwu4'){
-	elem.value='';
+	if ((elem.value === 'QH2-TGUlwu4') || (elem.value === "Twitter Handle (optional)")){
+		elem.value='';
 	}
 	else{
 	}
 }
+
 /* Controls sub-menu display on Demo Interface*/
 function displaysub(id){
 	var subid = document.getElementById(id);
@@ -180,6 +177,7 @@ function displaysub(id){
 		subid.style.display = "";
 	}
 }
+
 function rangecheck(elem){
 	if (elem.value > 100){
 		elem.value = 100;
@@ -188,18 +186,9 @@ function rangecheck(elem){
 		elem.value = 0;
 	}
 }
-function resetfields(){
-	document.getElementById('wmxcontrol').value = 85;
-	document.getElementById('wmycontrol').value = 25;
-	document.getElementById('wmlocation').value = "http://s.ytimg.com/yt/img/logos/youtube_logo_onecolor_againstblack-vflAZNyvx.png";
-	document.getElementById('wmlink').value = "http://www.youtube.com";
-	document.getElementById('prevthumblink').value = "http://img.youtube.com/vi/ueP-sPcgooI/maxresdefault.jpg";
-	document.getElementById('ctathumbimg').value = "http://img.youtube.com/vi/Z3ZAGBL6UBA/default.jpg";
-	document.getElementById('ctathumblink').value = "http://www.knowyourmeme.com";
-}
 </script>
 </head>
-<body onload="clearall();imgcheck();">
+<body onload="clearall();imgcheck();vidinfo();">
 <center>
 <div style="display:block;">
 	<h1><img style="height:40px;vertical-align: bottom;" src="http://s.ytimg.com/yt/img/logos/youtube_logo_standard_againstwhite-vflKoO81_.png" alt="YouTube Logo"/> Custom Video Embed Generator</h1>
@@ -212,7 +201,7 @@ function resetfields(){
 				<div class="optionbox" style="margin-top:0px;">
 					<div style="margin-bottom:5em;">
 						<input type="button" class="generate button" style="float:left;" value="Generate Embed Code" onClick="imgcheck();">
-						<input type="button" class="reset button" style="float:right;" value="Reset Options" onClick="clearall();resetfields();imgcheck();">
+						<input type="button" class="reset button" style="float:right;" value="Reset Options" onClick="clearall();imgcheck();">
 					</div>
 					<span style="font-weight:bold;font-size:15px;">YouTube Video Id or URL</span><br/>
 					<input style="margin-left:0;height:15px;" type="text" class="input" id="ytid" size="11" value="QH2-TGUlwu4" onClick="select(this);" onchange="parseid();imgcheck();"/><br/><span id="ytidmess" style="width:133px;height:10px;font:bold 10px sans-serif;color:red;"></span><br/>
@@ -255,8 +244,20 @@ function resetfields(){
 					<input type="text" class="input" id="playlist" style="width:300px;height:15px;" onchange="imgcheck();"/><br/>
 				</div>
 				<div class="optionbox">
+					<h2>Social Media Share Buttons</h2>
+					<label><input type="checkbox" id="socialmedia" onClick="displaysub('socialsharesub');setTimeout(function(){imgcheck();},1);" /><span>&nbsp;Enable social media buttons</span></label><br/><br/>
+					<div id="socialsharesub" style="display:none;margin-left:2em;">
+						<label><input type="checkbox" id="Facebook" onClick="imgcheck();"/><span>Facebook</span></label><br/>
+						<label><input type="checkbox" id="Googleplus" onClick="imgcheck();"/><span>Google+</span></label><br/>
+						<label><input type="checkbox" id="Twitter" onClick="imgcheck();"/><span>Twitter</span>&nbsp;|&nbsp;@</label><input class="input" type="text" id="twittervia" style="height:15px;" maxlength="50" value="Twitter Handle (optional)" onclick="Clear(this);select(this);"/><br />
+						<label><input type="checkbox" id="Linkedin" onClick="imgcheck();"/><span>LinkedIn</span></label><br/>
+						<label><input type="checkbox" id="Pinterest" onClick="imgcheck();"/><span>Pinterest</span></label><br/>
+						<label><input type="checkbox" id="Comments" onClick="imgcheck();"/><span>Comments (links to YouTube comments)</span></label><br/>
+					</div>
+				</div>
+				<div class="optionbox">
 					<h2>Custom Watermark</h2>
-					<span style="font:bold 10px sans-serif;color:#FF0000;">(Does not support Internet Explorer 6 or earlier)</span><br/>
+					<span style="font:bold 10px sans-serif;color:#FF0000;">(Not supported by Internet Explorer 6 or earlier)</span><br/>
 					<label><input type="checkbox" id="watermark" onClick="watermarkcheck();displaysub('watermarksub');setTimeout(function(){imgcheck();},1);" /><span>&nbsp;Enable custom watermark</span></label><br/><br/>
 					<div id="watermarksub" style="display:none;">
 						<span>Custom Watermark Location</span><br/>
@@ -276,7 +277,7 @@ function resetfields(){
 				</div>
 				<div class="optionbox">
 					<h2>Custom Preview Image</h2>
-					<span style="font:bold 10px sans-serif;color:#FF0000;">(Does not support Internet Explorer 7 or earlier)</span><br/>
+					<span style="font:bold 10px sans-serif;color:#FF0000;">(Not supported by Internet Explorer 7 or earlier)</span><br/>
 					<label><input type="checkbox" id="prevthumb" onClick="prevthumbcheck();imgcheck();displaysub('previmgsub');" /><span>&nbsp;Enable Custom Preview Image (requires autoplay)</span></label><br/><br/>
 					<div id="previmgsub" style="display:none;">
 						<span>Custom Preview Image Location</span><br/>
@@ -285,7 +286,7 @@ function resetfields(){
 				</div>
 				<div class="optionbox">
 					<h2>Call-to-Action</h2>
-					<span style="font:bold 10px sans-serif;color:#FF0000;">(Does not support Internet Explorer 7 or earlier)</span><br/>
+					<span style="font:bold 10px sans-serif;color:#FF0000;">(Not supported by Internet Explorer 7 or earlier)</span><br/>
 					<label><input type="checkbox" id="ctathumb" onClick="ctathumbcheck();imgcheck();displaysub('ctaimgsub');" /><span>&nbsp;Enable Custom Call-To-Action Image</span></label><br/><br/>
 					<div id="ctaimgsub" style="display:none;">
 						<span>Custom CTA Image Location</span><br/>
@@ -296,48 +297,48 @@ function resetfields(){
 				</div>
 			</form>
 			<br/>
-			<hr style="clear:both;" />
-			<form style="padding:0px 1em;">
-				<span style="font-weight:bold;font-family:sans-serif;color:#FF0000;font-size:10px;">Note: The below features <a href="https://developers.google.com/youtube/player_parameters" target="_blank">are in Google's documentation</a>, but are deprecated and only work with the old (Flash-only) embed code.</span><br/>
-				<label><input type="checkbox" onClick="displaysub('deprecatedsub');" /><span>&nbsp;Enable deprecated features</span></label><br/>
-				<div id="deprecatedsub" style="display:none;margin-left:2em;">
-					<!--Not working; may be deprecated or only works with old embed code-->
-					<label><input type="checkbox" id="hd" /><span>&nbsp;Default HD Playback (if available)</span></label><br/>
-					<label><input type="checkbox" id="showsearch" /><span>&nbsp;Disable Video Search Box</span></label><br/>
-					<label><input type="checkbox" id="egm" /><span>&nbsp;Enable Enhanced Genie Menu</span></label><br/>
-					<label><input type="checkbox" id="videoborder" /><span>&nbsp;Enable Video Border</span></label><br/>
-					<label><input type="text" class="input" size="6" maxlength="6" id="bordercolor1" style="width:5em;height:15px;" onClick="select(this);" /><span>&nbsp;Primary Border Color (Hex)</span></label><br/>
-					<label><input type="text" class="input" size="6" maxlength="6" id="bordercolor2" style="width:5em;height:15px;" onClick="select(this);" /><span>&nbsp;Secondary Border Color (Hex)</span></label><br/>
-					<!--
-					<input type="checkbox" id="jsapi" /><span>Enable Javascript API</span><br/>
-					<input type="checkbox" id="origin" /><span>Origin</span><br/>
-					<input type="text" id="playerapiid" /><span>Player App ID (used with JS API)</span><br/>
-					-->
-				</div>
-			</form>
 		</td>
 		<td style="width:300px;padding-right:2em;vertical-align:top;font-size:12px;font-weight:bold;text-align:left;">
 			<span>Embed Code</span><br/>
 			<textarea id="embedcode" rows="9" cols="35" readonly="readonly" style="clear:both;min-height:10em;max-height:10em;max-width:560px;min-width:560px;" onClick="select(this);" ></textarea><br/><br/>
-			<span>Direct Link</span><br/>
-			<div style="clear:both;" width="600" height="50" id="linkpreview"></div><br/>
-			<span>Short Link</span><br/><!--http://youtu.be/-->
-			<div style="clear:both;" width="600" height="50" id="linkpreview2"></div><br/>
-			<span>Fullscreen Link</span><br/><!--http://www.youtube.com/v/-->
-			<div style="clear:both;" width="600" height="50" id="linkpreview3"></div><br/><br/>
+			<table style="width:100%;">
+				<tr style="font-family:arial,sans-serif;clear:both;">
+					<td style="width:50%;vertical-align:top;">
+						<span style="float:left;clear:left;">Title:&nbsp;</span><div style="font-style:italic;font-weight:normal;" id="vidtitle"></div><br/>
+						<span style="float:left;clear:left;">Author:&nbsp;</span><div style="font-weight:normal;" id="vidauthor"></div><br/>
+						<span style="float:left;clear:left;">Published:&nbsp;</span><div style="font-weight:normal;" id="vidpubdate"></div><br/>
+						<span style="float:left;clear:left;">Views:&nbsp;</span><div style="font-weight:normal;" id="vidviews"></div><br/>
+						<span style="float:left;clear:left;">Duration:&nbsp;</span><div style="font-weight:normal;" id="vidduration"></div><br/>
+					</td>
+					<td style="width:50%;vertical-align:top;">
+						<span>Direct Link</span><br/>
+						<div style="clear:both;" width="600" height="50" id="linkpreview"></div><br/>
+						<span>Short Link</span><br/><!--http://youtu.be/-->
+						<div style="clear:both;" width="600" height="50" id="linkpreview2"></div><br/>
+						<span>Fullscreen Link</span><br/><!--http://www.youtube.com/v/-->
+						<div style="clear:both;" width="600" height="50" id="linkpreview3"></div><br/><br/>
+					</td>
+				</tr>
+			</table>
+			<div style="font-family:arial,sans-serif;display:none;">
+				<span>Description:</span>
+				<div style="" id="viddesc"></div>
+			</div>
+			<br/>
 			<span style="border: 1px solid #B9B9B9;font:bold 10px sans-serif;color:#FF0000;background-color:#F6F6F6;padding:5px;-moz-box-shadow: 0 1px 0 #fff,inset 0 1px 1px rgba(0,0,0,.17);-ms-box-shadow: 0 1px 0 #fff,inset 0 1px 1px rgba(0,0,0,.17);-webkit-box-shadow: 0 1px 0 #fff,inset 0 1px 1px rgba(0,0,0,.17);box-shadow: 0 1px 0 #fff,inset 0 1px 1px rgba(0,0,0,.17);border-radius: 15px;">Click on the images below to open video settings page (must be logged into YouTube)</span><br/><br/>
-				<table width="600" style="vertical-align:top;font-size:12px;font-weight:bold;line-height:15px;text-align:left;">
-					<tr>
-						<td style="padding-right:10px;">
-							<span>Current Video Thumbnail</span><br/><br/>
-							<div width="180" height="130" id="tbactive"></div>
-						</td>
-						<td style="border-left:2px ridge #999;padding-left:10px;">
-							<span>Video Thumbnail Choices</span><br/><br/>
-							<div width="420" height="130" id="tbpreview"></div>
-						</td>
-					</tr>
-				</table><br/>
+			<table width="600" style="vertical-align:top;font-size:12px;font-weight:bold;line-height:15px;text-align:left;">
+				<tr>
+					<td style="padding-right:10px;vertical-align:top;">
+						<span>Current Video Thumbnail</span><br/><br/>
+						<div width="180" height="130" id="tbactive"></div>
+					</td>
+					<td style="border-left:2px ridge #999;padding-left:10px;vertical-align:top;">
+						<span>Video Thumbnail Choices</span><br/><br/>
+						<div width="420" height="130" id="tbpreview"></div>
+					</td>
+				</tr>
+			</table>
+			<br/>
 			<span style="margin-top:1em;">Preview:</span><br/>
 			<!--<div style="clear:both;width:670px;max-width:670px;max-height:1920px;overflow:auto;padding: 10px 10px 10px 0px;" id="vidwrap"></div>-->
 			<iframe frameBorder="0" style="clear:both;width:100%;min-height:550px;max-width:670px;max-height:1920px;overflow:auto;border:0px solid white;" id="vidwrap"></iframe>
@@ -346,5 +347,7 @@ function resetfields(){
 </table>
 </center>
 <br/>
+<div id="ytdata">
+</div>
 </body>
 </html>
