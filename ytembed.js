@@ -139,8 +139,8 @@ function generate() {
 	var ytstring = 'http:\/\/www.youtube.com\/watch?v='+document.getElementById('ytid').value;
 	var ytstring2 = 'http:\/\/youtu.be\/'+document.getElementById('ytid').value;
 	var ytstring3 = 'http:\/\/www.youtube.com\/v\/'+document.getElementById('ytid').value;
-	var tbstring = '<a href=\"http:\/\/www.youtube.com\/my_videos_edit?video_id='+document.getElementById('ytid').value+'#form-pane\" target=\"_blank\"><img border=\"none\" style=\"padding:8px 4px;\" src=\"http:\/\/img.youtube.com\/vi\/'+document.getElementById('ytid').value+'\/1.jpg\" \/><\/a><a href=\"http:\/\/www.youtube.com\/my_videos_edit?video_id='+document.getElementById('ytid').value+'#form-pane\" target=\"_blank\"><img border=\"none\" style=\"padding:8px 4px;\" src=\"http:\/\/img.youtube.com\/vi\/'+document.getElementById('ytid').value+'\/2.jpg\" \/><\/a><a href=\"http:\/\/www.youtube.com\/my_videos_edit?video_id='+document.getElementById('ytid').value+'#form-pane\" target=\"_blank\"><img border=\"none\" style=\"padding:8px 4px;\" src=\"http:\/\/img.youtube.com\/vi\/'+document.getElementById('ytid').value+'\/3.jpg\" \/><\/a>';
-	var tbactive = '<a href=\"http:\/\/www.youtube.com\/my_videos_edit?video_id='+document.getElementById('ytid').value+'#form-pane\" target=\"_blank\"><img border=\"none\" style=\"background-color: #FEFCB3;border: 1px solid #FFE158;padding: 8px;\" src=\"http:\/\/img.youtube.com\/vi\/'+document.getElementById('ytid').value+'\/default.jpg\" \/><\/a><br\/><a style=\"font-family:arial,sans-serif;font-color:blue;\" href=\"http:\/\/img.youtube.com\/vi\/'+document.getElementById('ytid').value+'\/maxresdefault.jpg\" target=\"_blank\">Click for HD Version<\/a>';
+	var tbstring = '<a href=\"http:\/\/www.youtube.com\/my_videos_edit?video_id='+document.getElementById('ytid').value+'#form-pane\" target=\"_blank\"><img border=\"none\" style=\"padding:8px 4px;\" src=\"\/\/img.youtube.com\/vi\/'+document.getElementById('ytid').value+'\/1.jpg\" \/><\/a><a href=\"http:\/\/www.youtube.com\/my_videos_edit?video_id='+document.getElementById('ytid').value+'#form-pane\" target=\"_blank\"><img border=\"none\" style=\"padding:8px 4px;\" src=\"\/\/img.youtube.com\/vi\/'+document.getElementById('ytid').value+'\/2.jpg\" \/><\/a><a href=\"http:\/\/www.youtube.com\/my_videos_edit?video_id='+document.getElementById('ytid').value+'#form-pane\" target=\"_blank\"><img border=\"none\" style=\"padding:8px 4px;\" src=\"\/\/img.youtube.com\/vi\/'+document.getElementById('ytid').value+'\/3.jpg\" \/><\/a>';
+	var tbactive = '<a href=\"http:\/\/www.youtube.com\/my_videos_edit?video_id='+document.getElementById('ytid').value+'#form-pane\" target=\"_blank\"><img border=\"none\" style=\"background-color: #FEFCB3;border: 1px solid #FFE158;padding: 8px;\" src=\"\/\/img.youtube.com\/vi\/'+document.getElementById('ytid').value+'\/default.jpg\" \/><\/a><br\/><a style=\"font-family:arial,sans-serif;font-color:blue;\" href=\"http:\/\/img.youtube.com\/vi\/'+document.getElementById('ytid').value+'\/maxresdefault.jpg\" target=\"_blank\">Click for HD Version<\/a>';
 	if((wmlocation !== "") && (document.getElementById('watermark').checked)){
 		if(ytid === document.getElementById('ytid').value){
 			ytid += '?wmode=opaque';
@@ -323,10 +323,10 @@ function generate() {
 		GoogleplusVal='<a href=\"https:\/\/twitter.com\/share\" class=\"twitter-share-button\" data-url=\"'+socialurl+'\" data-text=\"'+socialdescription+': \" data-via=\"'+twittervia+'\">Tweet<\/a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=\"\/\/platform.twitter.com\/widgets.js\";fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");<\/script>';
 	}
 	if(document.getElementById('Linkedin').checked){
-		LinkedInVal='<script src=\"http:\/\/platform.linkedin.com\/in.js\" type=\"text\/javascript\"><\/script><script type=\"IN\/Share\" data-url=\"'+socialurl+'\" data-counter=\"right\"><\/script>';
+		LinkedInVal='<script src=\"\/\/platform.linkedin.com\/in.js\" type=\"text\/javascript\"><\/script><script type=\"IN\/Share\" data-url=\"'+socialurl+'\" data-counter=\"right\"><\/script>';
 	}
 	if(document.getElementById('Pinterest').checked){
-		PinterestVal='<a href=\"http:\/\/pinterest.com\/pin\/create\/button\/?media=http%3A%2F%2Fimg.youtube.com%2Fvi%2F'+document.getElementById('ytid').value+'%2F0.jpg&url='+socialurl+'&title='+socialdescription+'&is_video=true&description='+socialdescription+'\" class=\"pin-it-button\" count-layout=\"horizontal\">Pin It<\/a><script type=\"text\/javascript\" src=\"http:\/\/assets.pinterest.com\/js\/pinit.js\"><\/script>';
+		PinterestVal='<a href=\"\/\/pinterest.com\/pin\/create\/button\/?media=http%3A%2F%2Fimg.youtube.com%2Fvi%2F'+document.getElementById('ytid').value+'%2F0.jpg&url='+socialurl+'&title='+socialdescription+'&is_video=true&description='+socialdescription+'\" class=\"pin-it-button\" count-layout=\"horizontal\">Pin It<\/a><script type=\"text\/javascript\" src=\"\/\/assets.pinterest.com\/js\/pinit.js\"><\/script>';
 	}
 	if(document.getElementById('Comments').checked){
 		CommentsVal='<a style=\"font-size: 11px;font-weight: bold;font-family: Helvetica, Arial, sans-serif;border: 2px solid #DD3224;padding: 1px;border-radius: 3px;color: white;text-decoration:none;background-color: #DD3224;margin-left: 25px;vertical-align:6px;\" href=\"https:\/\/www.youtube.com\/all_comments?v='+document.getElementById('ytid').value+'\" target=\"_blank\">Comments >><\/a>';
@@ -365,7 +365,7 @@ function generate() {
 	/* If CustomUI is disabled and watermark is disabled */
 	else{
 		finalstring = '<iframe '+width+height+'src=\"'+protocol+'www.youtube.com\/embed\/'+ytid+'\" frameborder=\"0\"><\/iframe>';
-	}				
+	}
 	/* Check if the image is being placed outside the viewable range and notify user */
 	if(((parseInt(document.getElementById('wmxcontrol').value,10) > 100) || (parseInt(document.getElementById('wmycontrol').value,10) > 100)) && (document.getElementById('watermark').checked)){
 		finalstring = "Alert: you've positioned the watermark outside of the video window.";
@@ -448,7 +448,7 @@ function ctathumbcheck(){
 		document.getElementById('previmgsub').style.display = "none";
 		document.getElementById('watermark').checked = false;
 		document.getElementById('watermarksub').style.display = "none";
-		
+
 	}
 }
 function clearall(){
