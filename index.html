@@ -109,11 +109,6 @@
           Custom Video Embed Generator
         </h1>
       </div>
-      <noscript>
-        <div class="alert alert-danger" role="alert">
-          This tool requires JavaScript to be enabled for your browser.
-        </div>
-      </noscript>
     </div>
   </div>
 
@@ -130,6 +125,7 @@
             <h6 class="section-title">Play Options</h6>
             <div class="form-group row">
               <div class="col-xs-6">
+                <!-- TODO: Restrict input values to numbers -->
                 <label for="width">Width (pixels)</label>
                 <input type="text" class="form-control input-sm" id="video-width" size="1" maxlength="5" value="560" onFocus="select(this);" />
               </div>
@@ -254,6 +250,14 @@
       <div class="col-xs-12 col-md-8 right-column">
         <div class="col-xs-12">
           <div class="row">
+            <noscript>
+              <div class="alert alert-danger" role="alert">
+                This tool requires JavaScript to be enabled for your browser.
+              </div>
+            </noscript>
+            <div id="error-container" style="display:none;"></div>
+          </div>
+          <div class="row">
             <label for="embed-code">Embed</label>
             <textarea id="embed-code" class="col-sm-12 form-control" rows="9" readonly="readonly" onFocus="select(this);"></textarea>
           </div>
@@ -334,9 +338,18 @@
 
   <script>
   $(function() {
-    const form_id = 'youtube-options';
-    const YOUTUBE_API_KEY = '<YOUR API KEY>';
-    let errors = [];
+    var form_id = 'youtube-options';
+    var YOUTUBE_API_KEY = '<YOUR API KEY>';
+    window.errors = {
+      'video_id_invalid':{
+        'active': false,
+        'message': 'The value you entered does not appear to be a valid video URL.'
+      },
+      'video_embed_too_small':{
+        'active': false,
+        'message': 'Warning: YouTube does not support video embed sizes smaller than 200x200.'
+      }
+    };
 
     var serializeForm = function(){
       var optionsForm = document.forms[form_id];
@@ -459,9 +472,18 @@
         if (match && match[2].length === 11){
           document.getElementById('youtube-id').value = match[2];
         }
-        else {
-          errors.push('The value you entered does not appear to be a valid video URL.');
-        }
+      }
+
+      checkVideoId();
+    };
+
+    var checkVideoId = function(){
+      var video_id = document.getElementById('youtube-id').value;
+
+      window.errors.video_id_invalid.active = false;
+
+      if ([0,11].indexOf(video_id.length) === -1){
+        window.errors.video_id_invalid.active = true;
       }
     };
 
@@ -470,32 +492,57 @@
       var video_height = parseInt(document.getElementById('video-height').value,10);
 
       if (video_width < 200 || video_height < 200){
-        errors.push('Warning: YouTube does not support video embed sizes smaller than 200x200.');
+        window.errors.video_embed_too_small.active = true;
+      }
+      else{
+        window.errors.video_embed_too_small.active = false;
       }
     };
 
-    var alertMessage = function(errors){
-      errors.forEach(function(error){
-        window.alert(window);
+    var alertMessage = function(){
+      var show_errors = false;
+      var error_array = Object.keys(errors);
+
+      document.getElementById('error-container').innerHTML = '';
+
+      error_array.forEach(function(error_key){
+        if (window.errors[error_key].active){
+          show_errors = true;
+          document.getElementById('error-container').innerHTML += '<div class="alert alert-danger" role="alert">'+window.errors[error_key].message+'</div>';
+        }
       });
+
+      if (show_errors){
+        $('#error-container').show();
+      }
+      else{
+        $('#error-container').hide();
+      }
     };
 
     // TODO: limit the rate at which the listeners fire
 
-    // If any form values change
-    $('form[name="'+form_id+'"]').change(function(){
-      updateEmbedAndPreview();
-    });
+    var last_video_id = document.getElementById('youtube-id').value;
 
-    // If video ID changes (api requests happen)
-    $('input#youtube-id').change(function(){
-      parseVideoId(this.value);
+    // If any form values change
+    document.forms[form_id].onchange = function(){
+      updateEmbedAndPreview();
+
+      // If video ID changed (api requests happen)
+      var current_video_id = document.getElementById('youtube-id').value;
+      if (current_video_id !== last_video_id){
+        parseVideoId(current_video_id);
+        updateVideoInfo();
+
+        last_video_id = current_video_id;
+      }
+
       checkVideoDimensions();
-      updateVideoInfo();
-    });
+      alertMessage();
+    };
 
     // TODO: If errors state changes, display errors
-    // alertMessage(window.errors);
+    // alertMessage();
 
     // On page load
     updateEmbedAndPreview();
