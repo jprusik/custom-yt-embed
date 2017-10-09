@@ -42,6 +42,13 @@
       height: 3em;
     }
 
+    .help {
+      border-bottom: 1px dotted #777;
+      color: #337ab7;
+      cursor: help;
+      font-size: 12px;
+    }
+
     .panel:not(.panel-info) {
       border: none;
       box-shadow: none;
@@ -153,7 +160,11 @@
             </div>
             <div>
               <input type="checkbox" id="security" />
-              <label for="security">Use Enhanced Security (&nbsp;<a href="http://support.google.com/youtube/bin/answer.py?hl=en&answer=171780&expand=UseHTTPS#HTTPS" target="_blank">https</a>&nbsp;)</label>
+              <label for="security">Use Enhanced Security (&nbsp;<span class="help" title="Encrypts the connection between the user and YouTube; required for embeds on most modern websites.">?</span>&nbsp;)</label>
+            </div>
+            <div>
+              <input type="checkbox" id="enhanced-privacy" />
+              <label for="enhanced-privacy">Use Enhanced Privacy (&nbsp;<span class="help" title="Turns off YouTube's tracking until the video plays.">?</span>&nbsp;)</label>
             </div>
             <div>
               <input type="checkbox" id="autoplay" name="autoplay" value="1" />
@@ -401,7 +412,8 @@
         var video_width = document.getElementById('video-width').value;
 
         var embed_protocol = document.getElementById('security').checked ? 'https' : 'http';
-        var embed_url = '//www.youtube.com/embed/'+video_id+'?'+embed_query;
+        var embed_domain = document.getElementById('enhanced-privacy').checked ? 'www.youtube-nocookie.com' : 'www.youtube.com';
+        var embed_url = '//'+embed_domain+'/embed/'+video_id+'?'+embed_query;
         var embed_output = '<iframe src="'+embed_protocol+':'+embed_url+'" width="'+video_width+'" height="'+video_height+'" frameborder="0"></iframe>';
 
         var preview_output = embed_output;
