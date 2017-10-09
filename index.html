@@ -400,20 +400,26 @@
       return output_string.join(', ');
     };
 
+    var cleanArray = function(input_array){
+      return input_array.filter(function(n){return n});
+    };
+
     var updateEmbedAndPreview = function(){
       var video_id = document.getElementById('youtube-id').value;
 
       if (video_id.length > 0){
         var form_settings = serializeForm();
         var form_inputs = form_settings.form_data;
-        var embed_query = form_settings.query_string+'&'+document.getElementById('custom-params').value; //TODO: fix case where only custom param or none is present
+        var query_string_components = [form_settings.query_string, document.getElementById('custom-params').value];
+        var embed_query = cleanArray(query_string_components).join('&');
+        embed_query = (embed_query.length > 0 ? '?'+embed_query : '');
 
         var video_height = document.getElementById('video-height').value;
         var video_width = document.getElementById('video-width').value;
 
         var embed_protocol = document.getElementById('security').checked ? 'https' : 'http';
         var embed_domain = document.getElementById('enhanced-privacy').checked ? 'www.youtube-nocookie.com' : 'www.youtube.com';
-        var embed_url = '//'+embed_domain+'/embed/'+video_id+'?'+embed_query;
+        var embed_url = '//'+embed_domain+'/embed/'+video_id+embed_query;
         var embed_output = '<iframe src="'+embed_protocol+':'+embed_url+'" width="'+video_width+'" height="'+video_height+'" frameborder="0"></iframe>';
 
         var preview_output = embed_output;
@@ -477,6 +483,8 @@
         window.alert(window);
       });
     };
+
+    // TODO: limit the rate at which the listeners fire
 
     // If any form values change
     $('form[name="'+form_id+'"]').change(function(){
