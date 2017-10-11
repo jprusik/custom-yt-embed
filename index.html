@@ -348,17 +348,103 @@
 
   <script>
   $(function() {
-    var form_id = 'youtube-options';
-    var YOUTUBE_API_KEY = '<YOUR API KEY>';
-    window.errors = {
-      'video_id_invalid':{
-        'active': false,
-        'message': 'The value you entered does not appear to be a valid video URL.'
-      },
-      'video_embed_too_small':{
-        'active': false,
-        'message': 'Warning: YouTube does not support video embed sizes smaller than 200x200.'
+    var alertMessage = function(){
+      var show_errors = false;
+      var error_array = Object.keys(errors);
+
+      document.getElementById('error-container').innerHTML = '';
+
+      error_array.forEach(function(error_key){
+        if (window.errors[error_key].active){
+          show_errors = true;
+          document.getElementById('error-container').innerHTML += '<div class="alert alert-danger" role="alert">'+window.errors[error_key].message+'</div>';
+        }
+      });
+
+      if (show_errors){
+        $('#error-container').show();
       }
+      else{
+        $('#error-container').hide();
+      }
+    };
+
+    var checkVideoDimensions = function(){
+      var video_width = parseInt(document.getElementById('video-width').value,10);
+      var video_height = parseInt(document.getElementById('video-height').value,10);
+
+      if (video_width < 200 || video_height < 200){
+        window.errors.video_embed_too_small.active = true;
+      }
+      else{
+        window.errors.video_embed_too_small.active = false;
+      }
+    };
+
+    var checkVideoId = function(){
+      var video_id = document.getElementById('youtube-id').value;
+
+      window.errors.video_id_invalid.active = false;
+
+      if ([0,11].indexOf(video_id.length) === -1){
+        window.errors.video_id_invalid.active = true;
+      }
+    };
+
+    var cleanArray = function(input_array){
+      return input_array.filter(function(n){return n});
+    };
+
+    var displayMetadata = function(data){
+      var video_data = data.items[0];
+      if (video_data){
+        document.getElementById('video-title').innerHTML = video_data.snippet.title;
+        document.getElementById('video-author').innerHTML = video_data.snippet.channelTitle;
+        document.getElementById('video-published').innerHTML = Date(Date.parse(video_data.snippet.publishedAt)).toLocaleString();
+        document.getElementById('video-views').innerHTML = parseInt(video_data.statistics.viewCount).toLocaleString();
+        document.getElementById('video-duration').innerHTML = parseDuration(video_data.contentDetails.duration);
+
+        document.getElementById('hd-thumbnail').href = video_data.snippet.thumbnails.high.url;
+
+        $('#video-metadata').show();
+      }
+    };
+
+    var getVideoMetadata = function(video_id){
+      var video_lookup_api = 'https://www.googleapis.com/youtube/v3/videos/?id='+video_id+'&part=snippet%2CcontentDetails%2Cstatistics&key='+YOUTUBE_API_KEY;
+
+      $.get(video_lookup_api, function(response){
+        displayMetadata(response);
+      });
+    };
+
+    var parseDuration = function(duration){
+      var days = duration.match(/(\d+)\s*D/);
+      var hours = duration.match(/(\d+)\s*H/);
+      var minutes = duration.match(/(\d+)\s*M/);
+      var seconds = duration.match(/(\d+)\s*S/);
+
+      var output_string = [];
+      if (days){ output_string.push(days[1]+' day(s)'); }
+      if (hours){ output_string.push(hours[1]+' hour(s)'); }
+      if (minutes){ output_string.push(minutes[1]+' minute(s)'); }
+      if (seconds){ output_string.push(seconds[1]+' second(s)'); }
+
+      return output_string.join(', ');
+    };
+
+    var parseVideoId = function(input_string){
+      if ([0,11].indexOf(input_string.length) === -1){
+        /* Parse the video id out of a pasted video URL */
+        var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
+        var match = input_string.match(regExp);
+
+        if (match && match[2].length === 11){
+          document.getElementById('youtube-id').value = match[2];
+        }
+      }
+
+      checkVideoId();
     };
 
     var serializeForm = function(){
@@ -381,47 +467,6 @@
       return { 'form_data': form_data, 'query_string': query_string };
     };
 
-    var getVideoMetadata = function(video_id){
-      var video_lookup_api = 'https://www.googleapis.com/youtube/v3/videos/?id='+video_id+'&part=snippet%2CcontentDetails%2Cstatistics&key='+YOUTUBE_API_KEY;
-
-      $.get(video_lookup_api, function(response){
-        displayMetadata(response);
-      });
-    };
-
-    var displayMetadata = function(data){
-      var video_data = data.items[0];
-      if (video_data){
-        document.getElementById('video-title').innerHTML = video_data.snippet.title;
-        document.getElementById('video-author').innerHTML = video_data.snippet.channelTitle;
-        document.getElementById('video-published').innerHTML = Date(Date.parse(video_data.snippet.publishedAt)).toLocaleString();
-        document.getElementById('video-views').innerHTML = parseInt(video_data.statistics.viewCount).toLocaleString();
-        document.getElementById('video-duration').innerHTML = parseDuration(video_data.contentDetails.duration);
-
-        document.getElementById('hd-thumbnail').href = video_data.snippet.thumbnails.high.url;
-
-        $('#video-metadata').show();
-      }
-    };
-
-    var parseDuration = function(duration){
-      var days = duration.match(/(\d+)\s*D/);
-      var hours = duration.match(/(\d+)\s*H/);
-      var minutes = duration.match(/(\d+)\s*M/);
-      var seconds = duration.match(/(\d+)\s*S/);
-
-      var output_string = [];
-      if (days){ output_string.push(days[1]+' day(s)'); }
-      if (hours){ output_string.push(hours[1]+' hour(s)'); }
-      if (minutes){ output_string.push(minutes[1]+' minute(s)'); }
-      if (seconds){ output_string.push(seconds[1]+' second(s)'); }
-
-      return output_string.join(', ');
-    };
-
-    var cleanArray = function(input_array){
-      return input_array.filter(function(n){return n});
-    };
 
     var updateEmbedAndPreview = function(){
       var video_id = document.getElementById('youtube-id').value;
@@ -473,60 +518,16 @@
       getVideoMetadata(video_id);
     };
 
-    var parseVideoId = function(input_string){
-      if ([0,11].indexOf(input_string.length) === -1){
-        /* Parse the video id out of a pasted video URL */
-        var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
-        var match = input_string.match(regExp);
-
-        if (match && match[2].length === 11){
-          document.getElementById('youtube-id').value = match[2];
-        }
-      }
-
-      checkVideoId();
-    };
-
-    var checkVideoId = function(){
-      var video_id = document.getElementById('youtube-id').value;
-
-      window.errors.video_id_invalid.active = false;
-
-      if ([0,11].indexOf(video_id.length) === -1){
-        window.errors.video_id_invalid.active = true;
-      }
-    };
-
-    var checkVideoDimensions = function(){
-      var video_width = parseInt(document.getElementById('video-width').value,10);
-      var video_height = parseInt(document.getElementById('video-height').value,10);
-
-      if (video_width < 200 || video_height < 200){
-        window.errors.video_embed_too_small.active = true;
-      }
-      else{
-        window.errors.video_embed_too_small.active = false;
-      }
-    };
-
-    var alertMessage = function(){
-      var show_errors = false;
-      var error_array = Object.keys(errors);
-
-      document.getElementById('error-container').innerHTML = '';
-
-      error_array.forEach(function(error_key){
-        if (window.errors[error_key].active){
-          show_errors = true;
-          document.getElementById('error-container').innerHTML += '<div class="alert alert-danger" role="alert">'+window.errors[error_key].message+'</div>';
-        }
-      });
-
-      if (show_errors){
-        $('#error-container').show();
-      }
-      else{
-        $('#error-container').hide();
+    var form_id = 'youtube-options';
+    var YOUTUBE_API_KEY = '<YOUR API KEY>';
+    window.errors = {
+      'video_id_invalid':{
+        'active': false,
+        'message': 'The value you entered does not appear to be a valid video URL.'
+      },
+      'video_embed_too_small':{
+        'active': false,
+        'message': 'Warning: YouTube does not support video embed sizes smaller than 200x200.'
       }
     };
 
@@ -536,8 +537,6 @@
 
     // If any form values change
     document.forms[form_id].onchange = function(){
-      updateEmbedAndPreview();
-
       // If video ID changed (api requests happen)
       var current_video_id = document.getElementById('youtube-id').value;
       if (current_video_id !== last_video_id){
@@ -547,6 +546,7 @@
         last_video_id = current_video_id;
       }
 
+      updateEmbedAndPreview();
       checkVideoDimensions();
       alertMessage();
     };
