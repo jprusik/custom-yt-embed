@@ -26,8 +26,6 @@ Limitations/Known Issues
 -----------
 The Custom YouTube Embed Generator currently only generates code for YouTube's newest, preferred methodology, which uses an HTML5-friendly iframe to automatically switch to the most appropriate embedding method for the viewer. The old (now officially deprecated) method used Flash only, and while it may still work in some cases, there are continually fewer reasons to use it as the iframe embeds becomes more robust.
 
-The "HD" thumbnail link results in a error image if the queried video does not have a vertical resolution of 720 or greater.
-
 Author
 -------
 Jonathan Prusik @jprusik [www.classynemesis.com]
