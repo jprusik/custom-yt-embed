@@ -1,6 +1,6 @@
-custom-yt-embed
-===============
 Custom YouTube Embed Generator
+==============================
+custom-yt-embed
 
 Purpose
 -------
@@ -8,7 +8,7 @@ YouTube embeds are surprisingly versatile; there are numerous URL parameters to 
 
 Usage
 -----
-To see the tool in action, you can find a working example [here](https://jprusik.github.io/custom-yt-embed/index.html). (The legacy version of the tool is [here](https://jprusik.github.io/custom-yt-embed/index.html).)
+To see the tool in action, you can find a working example [here](https://jprusik.github.io/custom-yt-embed/index.html). (The legacy version of the tool is [here](https://jprusik.github.io/custom-yt-embed/legacy/index.html).)
 
 Upon option changes, the form value from each field will update the YouTube embed code and previews. An API request to [Google's YouTube data feed](https://developers.google.com/youtube/v3/) will also fire, and present additional information about the video upon a successful request.
 
