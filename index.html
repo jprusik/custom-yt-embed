@@ -49,6 +49,17 @@
       font-size: 12px;
     }
 
+    .warn {
+      border-bottom: 1px dotted #777;
+      color: goldenrod;
+      cursor: help;
+      font-size: 12px;
+    }
+
+    .deprecated {
+      color: silver;
+    }
+
     .panel:not(.panel-info) {
       border: none;
       box-shadow: none;
@@ -188,15 +199,11 @@
             <h6 class="section-title">Appearence</h6>
             <div>
               <input type="checkbox" id="modestbranding" name="modestbranding" value="1" />
-              <label for="modestbranding">Modest Branding</label>
-            </div>
-            <div>
-              <input type="checkbox" id="showinfo" name="showinfo" value="0" />
-              <label for="showinfo">Disable dropdown video information box</label>
+              <label for="modestbranding">Modest Branding (&nbsp;<span class="warn" title="this feature is not compatible with the white progress bar feature">!</span>&nbsp;<span class="help" title="Make the YouTube logo/branding less visible">?</span>&nbsp;)</label>
             </div>
             <div>
               <input type="checkbox" id="rel" name="rel" value="0" />
-              <label for="rel">Do not show related videos on playback</label>
+              <label for="rel">Do not show unrelated videos on pause/playback (&nbsp;<span class="help" title="Depending on the channel, related videos may not appear, and if they do, they will come from the same channel as the video that was just played. Note: the functionality of this feature changed by YouTube on September 25, 2018">?</span>&nbsp;)</label>
             </div>
             <div>
               <input type="checkbox" id="cc_load_policy" name="cc_load_policy" value="1" />
@@ -205,10 +212,6 @@
             <div>
               <input type="checkbox" id="iv_load_policy" name="iv_load_policy" value="3" />
               <label for="iv_load_policy">Annotations disabled by default</label>
-            </div>
-            <div>
-              <input type="checkbox" id="theme" name="theme" value="light" />
-              <label for="theme">Use alternate "Light" UI theme</label>
             </div>
             <div style="margin-top: 4px;">
               <label for="hl">YouTube player language (&nbsp;<span class="help" title="Use a ISO 639-1 locale code to change the language of the YouTube player's interface.">?</span>&nbsp;)</label>
@@ -223,11 +226,7 @@
             </div>
             <div>
               <input type="checkbox" id="color" name="color" value="white" />
-              <label for="color">Use white progress bar instead of red</label>
-            </div>
-            <div>
-              <input type="checkbox" id="autohide" name="autohide" value="0" />
-              <label for="autohide">Do not autohide play bar</label>
+              <label for="color">Use white progress bar instead of red (&nbsp;<span class="warn" title="Enabling the white progress bar will prevent modest branding from functioning.">!</span>&nbsp;)</label>
             </div>
             <div>
               <input type="checkbox" id="controls" name="controls" value="0" />
@@ -254,7 +253,21 @@
             <div class="panel panel-info">
               <div class="panel-heading">Where did the other options go?</div>
               <div class="panel-body">
-                <p>Some features previously available in this tool are now offered as official YouTube features, and so do not require complex workarounds.</p>
+                <p>The following features have been deprecated by YouTube:</p>
+                <div>
+                  <input type="checkbox" id="showinfo" name="showinfo" value="0" disabled />
+                  <label title="This feature was deprecated by YouTube in 2018, and no longer functions" for="showinfo" class="deprecated">Disable dropdown video information box (&nbsp;<span class="help">?</span>&nbsp;)</label>
+                </div>
+                <div>
+                  <input type="checkbox" id="theme" name="theme" value="light" disabled />
+                  <label for="theme" class="deprecated" title="This feature was deprecated by YouTube in 2015, and no longer functions.">Use alternate "Light" UI theme (&nbsp;<span class="help">?</span>&nbsp;)</label>
+                </div>
+                <div>
+                  <input type="checkbox" id="autohide" name="autohide" value="0" disabled />
+                  <label for="autohide" class="deprecated" title="This feature was deprecated by YouTube in 2015, and no longer functions.">Do not autohide play bar (&nbsp;<span class="help">?</span>&nbsp;)</label>
+                </div>
+                <br>
+                <p>Additionally, some features previously available in this tool are now offered as official YouTube features, and so do not require complex workarounds.</p>
                 <ul class="list-unstyled">
                   <li><a id="video-edit-link" href="https://www.youtube.com/edit?video_id=QH2-TGUlwu4">Custom Preview Image</a><br><span class="text-muted">(look for the "custom thumbnail" button)</span></li>
                   <li><a href="https://www.youtube.com/branding">Custom Watermark</a></li>
