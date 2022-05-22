@@ -210,6 +210,11 @@
               <input type="checkbox" id="theme" name="theme" value="light" />
               <label for="theme">Use alternate "Light" UI theme</label>
             </div>
+            <div style="margin-top: 4px;">
+              <label for="hl">YouTube player language (&nbsp;<span class="help" title="Use a ISO 639-1 locale code to change the language of the YouTube player's interface.">?</span>&nbsp;)</label>
+              <br>
+              <input type="text" id="hl" name="hl" value="" placeholder="en-us" pattern="/^[A-Za-z]{2,4}([_-][A-Za-z]{4})?([_-]([A-Za-z]{2}|[0-9]{3}))?$/" />
+            </div>
             <br>
             <h6 class="section-title">Control Options</h6>
             <div>
