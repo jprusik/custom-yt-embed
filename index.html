@@ -481,6 +481,10 @@
         var form_settings = serializeForm();
         var form_inputs = form_settings.form_data;
         var query_string_components = [form_settings.query_string, document.getElementById('custom-params').value];
+
+        // YouTube now requires the attribute `allowfullscreen` in addition to `fs=1` or the absence of `fs=0`. Otherwise, the fullscreen button will appear, but will be disabled.
+        var allow_fullscreen = query_string_components.includes('fs=0') ? '' : ' allowfullscreen';
+
         var embed_query = cleanArray(query_string_components).join('&');
         embed_query = (embed_query.length > 0 ? '?'+embed_query : '');
 
@@ -491,7 +495,7 @@
         var embed_protocol = document.getElementById('security').checked ? 'https' : 'http';
         var embed_domain = document.getElementById('enhanced-privacy').checked ? 'www.youtube-nocookie.com' : 'www.youtube.com';
         var embed_url = '//'+embed_domain+'/embed/'+video_id+embed_query;
-        var embed_output = `<iframe src="${embed_protocol}:${embed_url}" width="${video_width}" height="${video_height}"${video_title ? ` title="${video_title}"` : ''} frameborder="0"></iframe>`;
+        var embed_output = `<iframe src="${embed_protocol}:${embed_url}" width="${video_width}" height="${video_height}"${video_title ? ` title="${video_title}"` : ''} frameborder="0"${allow_fullscreen}></iframe>`;
 
         var preview_output = embed_output;
 
