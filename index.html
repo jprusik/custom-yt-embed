@@ -59,7 +59,7 @@
     }
     .section-title {
       font-weight: bold;
-      margin: 0;
+      margin: 0 0 4px 0;
       text-decoration: underline;
       text-transform: uppercase;
     }
@@ -131,6 +131,10 @@
             <div class="form-group">
               <label for="youtube-id"><h4>YouTube Video Id or URL</h4></label>
               <input type="text" class="form-control input-lg" id="youtube-id" size="11" value="QH2-TGUlwu4" onFocus="select(this);" />
+            </div>
+            <div class="form-group">
+              <h6 class="section-title">Video Title (<span class="help" title="Including a content-specific title aids accessibility tools">?</span>)</h6>
+              <input type="text" class="form-control input-sm" id="video-title" size="4" placeholder="Nyan Cat video" onFocus="select(this);" />
             </div>
             <h6 class="section-title">Play Options</h6>
             <div class="form-group row">
@@ -279,10 +283,6 @@
           <div id="video-info" class="row">
             <div id="video-metadata" class="col-xs-12 col-sm-6" style="display:none;">
               <div class="row">
-                <label for="video-title">Title:</label>
-                <div id="video-title"></div>
-              </div>
-              <div class="row">
                 <label for="video-author">Author:</label>
                 <div id="video-author"></div>
               </div>
@@ -399,7 +399,8 @@
     var displayMetadata = function(data){
       var video_data = data.items[0];
       if (video_data){
-        document.getElementById('video-title').innerHTML = video_data.snippet.title;
+        window.errors.video_metadata_fetch_failed.active = false;
+        document.getElementById('video-title').value = video_data.snippet.title;
         document.getElementById('video-author').innerHTML = video_data.snippet.channelTitle;
         document.getElementById('video-published').innerHTML = Date(Date.parse(video_data.snippet.publishedAt)).toLocaleString();
         document.getElementById('video-views').innerHTML = parseInt(video_data.statistics.viewCount).toLocaleString();
@@ -408,15 +409,19 @@
         document.getElementById('hd-thumbnail').href = video_data.snippet.thumbnails.high.url;
 
         $('#video-metadata').show();
+      } else {
+        window.errors.video_metadata_fetch_failed.active = true;
       }
     };
 
-    var getVideoMetadata = function(video_id){
-      var video_lookup_api = 'https://www.googleapis.com/youtube/v3/videos/?id='+video_id+'&part=snippet%2CcontentDetails%2Cstatistics&key='+YOUTUBE_API_KEY;
+    var getVideoMetadata = async function(video_id){
+      var video_lookup_api = `https://www.googleapis.com/youtube/v3/videos/?id=${video_id}&part=snippet%2CcontentDetails%2Cstatistics&key=${YOUTUBE_API_KEY}`;
 
-      $.get(video_lookup_api, function(response){
-        displayMetadata(response);
-      });
+      return await $.get(video_lookup_api, displayMetadata)
+        .fail((e) => {
+          window.errors.video_metadata_fetch_failed.active = true;
+        })
+        .always(alertMessage);
     };
 
     var parseDuration = function(duration){
@@ -479,13 +484,14 @@
         var embed_query = cleanArray(query_string_components).join('&');
         embed_query = (embed_query.length > 0 ? '?'+embed_query : '');
 
+        var video_title = document.getElementById('video-title').value;
         var video_height = document.getElementById('video-height').value;
         var video_width = document.getElementById('video-width').value;
 
         var embed_protocol = document.getElementById('security').checked ? 'https' : 'http';
         var embed_domain = document.getElementById('enhanced-privacy').checked ? 'www.youtube-nocookie.com' : 'www.youtube.com';
         var embed_url = '//'+embed_domain+'/embed/'+video_id+embed_query;
-        var embed_output = '<iframe src="'+embed_protocol+':'+embed_url+'" width="'+video_width+'" height="'+video_height+'" frameborder="0"></iframe>';
+        var embed_output = `<iframe src="${embed_protocol}:${embed_url}" width="${video_width}" height="${video_height}"${video_title ? ` title="${video_title}"` : ''} frameborder="0"></iframe>`;
 
         var preview_output = embed_output;
 
@@ -505,6 +511,7 @@
       document.getElementById('fullscreen-link').href = 'https://www.youtube.com/v/'+video_id;
       document.getElementById('video-edit-link').href= 'https://www.youtube.com/edit?video_id='+video_id;
       document.getElementById('video-endscreen-link').href= 'https://www.youtube.com/endscreen?v='+video_id;
+      document.getElementById('video-title').value = 'A YouTube video';
 
       ['current-thumbnail','first-thumbnail','second-thumbnail','third-thumbnail'].forEach(function(id,index){
         if (index === 0){
@@ -516,7 +523,7 @@
 
       $('#video-info, #video-links, #video-thumbnails').show();
 
-      getVideoMetadata(video_id);
+      return getVideoMetadata(video_id);
     };
 
     var form_id = 'youtube-options';
@@ -529,6 +536,10 @@
       'video_embed_too_small':{
         'active': false,
         'message': 'Warning: YouTube does not support video embed sizes smaller than 200x200.'
+      },
+      'video_metadata_fetch_failed': {
+        'active': false,
+        'message': 'There was a problem fetching metadata for the specified video.'
       }
     };
 
@@ -553,8 +564,7 @@
     };
 
     // On page load
-    updateEmbedAndPreview();
-    updateVideoInfo();
+    updateVideoInfo().finally(updateEmbedAndPreview);
   });
 
   // Polyfills
