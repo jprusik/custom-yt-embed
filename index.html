@@ -193,7 +193,7 @@
             </div>
             <div>
               <input type="checkbox" id="loop" name="loop" value="1" />
-              <label for="loop">Loop the video/playlist</label>
+              <label for="loop">Loop the video/playlist (&nbsp;<span class="warn" title="Looping a single video requires that video id to be included with the 'playlist' parameter">!</span>&nbsp;)</label>
             </div>
             <br>
             <h6 class="section-title">Appearence</h6>
@@ -410,10 +410,6 @@
       }
     };
 
-    var cleanArray = function(input_array){
-      return input_array.filter(function(n){return n});
-    };
-
     var displayMetadata = function(data){
       var video_data = data.items[0];
       if (video_data){
@@ -473,22 +469,34 @@
 
     var serializeForm = function(){
       var optionsForm = document.forms[form_id];
-
-      // var optionsFormData = new FormData(optionsForm);
-
-      // var form_inputs = optionsForm.getElementsByClassName('form-check-input');
-
       var form_selector = $(optionsForm);
 
       var form_data = form_selector.serializeArray().filter(
         function(field){
-          return field.value !== "";
+          return !!field.value;
         }
       );
 
-      var query_string = form_data.map(function(field){return field.name+'='+field.value}).join('&');
+      var loopIsEnabled = !!form_data.find(({name, value}) => name === 'loop' && value === '1');
+      var playlist = form_data.find(({name, value}) => name === 'playlist');
+      var video_id = document.getElementById('youtube-id').value;
 
-      return { 'form_data': form_data, 'query_string': query_string };
+      // Looping will not work for a single video unless the video id is also included in the playlist attribute.
+      if (loopIsEnabled && !playlist) {
+
+        form_data = [...form_data, {name: 'playlist', value: video_id}];
+        document.getElementById('playlist').value = video_id;
+      }
+
+      // If the video was added to the playlist for looping, remove it
+      if (!loopIsEnabled && playlist && playlist.value === video_id) {
+        form_data = form_data.filter(({name}) => name !== 'playlist');
+        document.getElementById('playlist').value = '';
+      }
+
+      var query_string = form_data.map(({name, value}) => `${name}=${value}`).join('&');
+
+      return { form_data, query_string };
     };
 
 
@@ -500,11 +508,11 @@
         var form_inputs = form_settings.form_data;
         var query_string_components = [form_settings.query_string, document.getElementById('custom-params').value];
 
-        // YouTube now requires the attribute `allowfullscreen` in addition to `fs=1` or the absence of `fs=0`. Otherwise, the fullscreen button will appear, but will be disabled.
-        var allow_fullscreen = query_string_components.includes('fs=0') ? '' : ' allowfullscreen';
-
-        var embed_query = cleanArray(query_string_components).join('&');
+        var embed_query = query_string_components.filter(n => !!n).join('&');
         embed_query = (embed_query.length > 0 ? '?'+embed_query : '');
+
+        // YouTube now requires the attribute `allowfullscreen` in addition to `fs=1` or the absence of `fs=0`. Otherwise, the fullscreen button will appear, but will be disabled.
+        var allow_fullscreen = embed_query.includes('fs=0') ? '' : ' allowfullscreen';
 
         var video_title = document.getElementById('video-title').value;
         var video_height = document.getElementById('video-height').value;
